@@ -1,11 +1,13 @@
 import express, { type Request, type Response } from "express";
 import { config } from "./envConfig.ts";
 import { pool } from "./config/railway.ts";
+import cors from 'cors';
 
 const app = express();
 
 // Middlewares
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Server's running");
