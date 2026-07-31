@@ -1,0 +1,124 @@
+# ====================================================================
+# 1. ENVIRONMENT VARIABLES & SECRETS (NEVER COMMIT THESE)
+# ====================================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+certs/
+secrets.json
+credentials.json
+
+# ====================================================================
+# 2. OPERATING SYSTEM TRASH
+# ====================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+Ehthumbs.db
+Desktop.ini
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+.fuse_hidden*
+.directory
+.trash/
+*.bak
+
+# ====================================================================
+# 3. NODE.JS & JAVASCRIPT DEPENDENCIES / BUILDS
+# ====================================================================
+node_modules/
+jspm_packages/
+bower_components/
+.npm
+.eslintcache
+.stylelintcache
+.prettiercache
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ====================================================================
+# 4. PYTHON
+# ====================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.tox/
+.dmypy.json
+dmypy.json
+
+# ====================================================================
+# 5. CODE EDITORS & IDEs
+# ====================================================================
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+*.code-workspace
+
+# JetBrains (IntelliJ, WebStorm, PyCharm, PhpStorm)
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Xcode & Swift
+build/
+DerivedData/
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+*.xcuserstate
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ====================================================================
+# 6. MISCELLANEOUS (COMPRESSED FILES & DATABASES)
+# ====================================================================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.sqlite
+*.db
