@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import type { SignOptions } from "jsonwebtoken";
 
 dotenv.config();
 
@@ -19,11 +20,15 @@ export const config = {
     password: getEnvVar("DB_PASSWORD", ""),
     database: getEnvVar("DB_NAME"),
   },
+  jwt: {
+    secret: getEnvVar("JWT_SECRET"),
+    expiresIn: (process.env.JWT_EXPIRES_IN || "1d") as NonNullable<
+      SignOptions["expiresIn"]
+    >,
+  },
 };
 
-
-console.log(`-----------------------------------`)
-console.log(`port: config.port`);
-console.log(config.db);
-console.log(`-----------------------------------`)
-
+console.log(`-----------------------------------`);
+console.log(`port: ${config.port}`);
+console.log(`Database connected to host: ${config.db.host}`);
+console.log(`-----------------------------------`);
