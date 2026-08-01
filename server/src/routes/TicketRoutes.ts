@@ -15,9 +15,9 @@ router.use(authenticateJWT);
 router.get("/", getTickets);
 router.get("/:id", getTicketById);
 router.post("/", createTicket);
-router.patch("/:id", updateTicket);
+router.put("/:id", updateTicket);
 router.delete("/:id", deleteTicket);
-router.patch("/:id/assign", assignTicket);
+router.put("/:id/assign", assignTicket);
 
 router.get("/:ticketId/comments", getCommentsByTicket);
 router.post("/:ticketId/comments", createComment);
