@@ -4,7 +4,7 @@ import { pool } from "../../config/railway.ts";
 export const getCustomers = async (req: Request, res: Response) => {
   try {
     const [rows] = await pool.query(
-      `SELECT id, first_name, last_name, email, created_at FROM users WHERE role = 'customer'`,
+      `SELECT id, first_name, last_name, email FROM users WHERE role = 'customer'`,
     );
     res.status(200).json(rows);
   } catch (error) {

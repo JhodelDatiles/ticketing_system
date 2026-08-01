@@ -1,0 +1,1376 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+server/
+  src/
+    config/
+      railway.ts
+    controller/
+      Authentication/
+        JWTController.ts
+        LoginController.ts
+        RegisterController.ts
+      Tickets/
+        AssignController.ts
+        CreateController.ts
+        DeleteController.ts
+        UpdateController.ts
+        ViewController.ts
+      Users/
+        AdminsController.ts
+        AgentsController.ts
+        CustomersController.ts
+      AttachmentsController.ts
+      CategoriesController.ts
+      CommentsController.ts
+      PrioritiesController.ts
+      ReportsController.ts
+      StatusesController.ts
+    envConfig.ts
+    server.ts
+  package.json
+  tsconfig.json
+.gitignore
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="server/src/config/railway.ts">
+import mysql from "mysql2/promise";
+import { config } from "../envConfig.ts";
+
+export const pool = mysql.createPool({
+  ...config.db,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
+</file>
+
+<file path="server/tsconfig.json">
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./src",
+    "outDir": "./dist",
+    // Environment Settings
+    // See also https://aka.ms/tsconfig/module
+    "module": "nodenext",
+    "moduleResolution": "NodeNext",
+    "target": "esnext",
+    "types": [],
+    // For nodejs:
+    // "lib": ["esnext"],
+    // "types": ["node"],
+    // and npm install -D @types/node
+    // Other Outputs
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    // Style Options
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+    // Recommended Options
+    "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  }
+}
+</file>
+
+<file path=".gitignore">
+# ====================================================================
+# 1. ENVIRONMENT VARIABLES & SECRETS (NEVER COMMIT THESE)
+# ====================================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+certs/
+secrets.json
+credentials.json
+
+# ====================================================================
+# 2. OPERATING SYSTEM TRASH
+# ====================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+Ehthumbs.db
+Desktop.ini
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+.fuse_hidden*
+.directory
+.trash/
+*.bak
+
+# ====================================================================
+# 3. NODE.JS & JAVASCRIPT DEPENDENCIES / BUILDS
+# ====================================================================
+node_modules/
+jspm_packages/
+bower_components/
+.npm
+.eslintcache
+.stylelintcache
+.prettiercache
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ====================================================================
+# 4. PYTHON
+# ====================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.tox/
+.dmypy.json
+dmypy.json
+
+# ====================================================================
+# 5. CODE EDITORS & IDEs
+# ====================================================================
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+*.code-workspace
+
+# JetBrains (IntelliJ, WebStorm, PyCharm, PhpStorm)
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Xcode & Swift
+build/
+DerivedData/
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+*.xcuserstate
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ====================================================================
+# 6. MISCELLANEOUS (COMPRESSED FILES & DATABASES)
+# ====================================================================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.sqlite
+*.db
+</file>
+
+<file path="server/src/controller/Authentication/JWTController.ts">
+import jwt from "jsonwebtoken";
+import type { Request, Response, NextFunction } from "express";
+import { config } from "../../envConfig.ts";
+
+export interface JwtPayload {
+  id: number;
+  role: "admin" | "agent" | "customer";
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: JwtPayload;
+    }
+  }
+}
+
+export function generateToken(payload: JwtPayload): string {
+  return jwt.sign(payload, config.jwt.secret, {
+    expiresIn: config.jwt.expiresIn,
+  });
+}
+
+export function authenticateJWT(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader?.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ error: "Missing or invalid Authorization header" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ error: "Invalid token format" });
+  }
+  try {
+    const decoded = jwt.verify(
+      token,
+      config.jwt.secret,
+    ) as unknown as JwtPayload;
+
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(403).json({ error: "Invalid or expired token" });
+  }
+}
+
+export function authorizeRoles(...roles: JwtPayload["role"][]) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({ error: "Insufficient permissions" });
+    }
+    next();
+  };
+}
+</file>
+
+<file path="server/src/controller/Authentication/LoginController.ts">
+import bcrypt from "bcryptjs";
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+import { generateToken } from "./JWTController.ts";
+
+interface UserRow {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  role: "admin" | "agent" | "customer";
+}
+
+export const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    const [rows] = await pool.query(`SELECT * FROM users WHERE email = ?`, [
+      email,
+    ]);
+    const users = rows as UserRow[];
+
+    if (users.length === 0) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const user = users[0]!;
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const token = generateToken({ id: user.id, role: user.role });
+
+    res.status(200).json({
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      role: user.role,
+      token,
+    });
+  } catch (error) {
+    console.error("Error logging in:", error);
+    res.status(500).json({ error: "Failed to log in" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Authentication/RegisterController.ts">
+import bcrypt from "bcryptjs";
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+import { generateToken } from "./JWTController.ts";
+
+const SALT_ROUNDS = 10;
+
+export const register = async (req: Request, res: Response) => {
+  try {
+    const { first_name, last_name, email, password, role } = req.body;
+
+    if (!first_name || !last_name || !email || !password) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const [existing] = await pool.query(
+      `SELECT id FROM users WHERE email = ?`,
+      [email],
+    );
+    if ((existing as unknown[]).length > 0) {
+      return res.status(409).json({ error: "Email already registered" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    const finalRole = role ?? "customer";
+
+    const [result] = await pool.query(
+      `INSERT INTO users (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, ?)`,
+      [first_name, last_name, email, hashedPassword, finalRole],
+    );
+
+    const insertId = (result as { insertId: number }).insertId;
+    const token = generateToken({ id: insertId, role: finalRole });
+
+    res.status(201).json({
+      id: insertId,
+      first_name,
+      last_name,
+      email,
+      role: finalRole,
+      token,
+    });
+  } catch (error) {
+    console.error("Error registering user:", error);
+    res.status(500).json({ error: "Failed to register user" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Tickets/AssignController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+export const assignTicket = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { assigned_to } = req.body;
+
+    if (!assigned_to) {
+      return res.status(400).json({ error: "assigned_to is required" });
+    }
+
+    const [result] = await pool.query(
+      `UPDATE tickets SET assigned_to = ? WHERE id = ?`,
+      [assigned_to, id],
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    res.status(200).json({ id, assigned_to });
+  } catch (error) {
+    console.error("Error assigning ticket:", error);
+    res.status(500).json({ error: "Failed to assign ticket" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Tickets/CreateController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+const DEFAULT_STATUS_ID = 1; // "Open"
+
+function generateTicketNumber(): string {
+  const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const randomPart = Math.floor(1000 + Math.random() * 9000);
+  return `TKT-${datePart}-${randomPart}`;
+}
+
+export const createTicket = async (req: Request, res: Response) => {
+  try {
+    const {
+      title,
+      description,
+      category_id,
+      priority_id,
+      created_by,
+      assigned_to,
+    } = req.body;
+
+    if (!title || !description || !category_id || !priority_id || !created_by) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const ticket_number = generateTicketNumber();
+
+    const [result] = await pool.query(
+      `INSERT INTO tickets
+        (ticket_number, title, description, category_id, priority_id, status_id, created_by, assigned_to)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        ticket_number,
+        title,
+        description,
+        category_id,
+        priority_id,
+        DEFAULT_STATUS_ID,
+        created_by,
+        assigned_to ?? null,
+      ],
+    );
+
+    const insertId = (result as { insertId: number }).insertId;
+
+    res.status(201).json({
+      id: insertId,
+      ticket_number,
+      title,
+      description,
+      category_id,
+      priority_id,
+      status_id: DEFAULT_STATUS_ID,
+      created_by,
+      assigned_to: assigned_to ?? null,
+    });
+  } catch (error) {
+    console.error("Error creating ticket:", error);
+    res.status(500).json({ error: "Failed to create ticket" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Tickets/DeleteController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+export const deleteTicket = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const [result] = await pool.query(`DELETE FROM tickets WHERE id = ?`, [id]);
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting ticket:", error);
+    res.status(500).json({ error: "Failed to delete ticket" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Tickets/UpdateController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+const ALLOWED_FIELDS = [
+  "title",
+  "description",
+  "category_id",
+  "priority_id",
+  "status_id",
+] as const;
+
+export const updateTicket = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const updates: Record<string, unknown> = {};
+
+    for (const field of ALLOWED_FIELDS) {
+      if (req.body[field] !== undefined) {
+        updates[field] = req.body[field];
+      }
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ error: "No valid fields to update" });
+    }
+
+    const setClause = Object.keys(updates)
+      .map((field) => `${field} = ?`)
+      .join(", ");
+    const values = [...Object.values(updates), id];
+
+    const [result] = await pool.query(
+      `UPDATE tickets SET ${setClause} WHERE id = ?`,
+      values,
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    res.status(200).json({ id, ...updates });
+  } catch (error) {
+    console.error("Error updating ticket:", error);
+    res.status(500).json({ error: "Failed to update ticket" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Tickets/ViewController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+// GET /tickets - list all tickets
+export const getTickets = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT * FROM tickets ORDER BY created_at DESC`,
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching tickets:", error);
+    res.status(500).json({ error: "Failed to fetch tickets" });
+  }
+};
+
+// GET /tickets/:id - single ticket
+export const getTicketById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const [rows] = await pool.query(`SELECT * FROM tickets WHERE id = ?`, [id]);
+    const tickets = rows as unknown[];
+
+    if (tickets.length === 0) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    res.status(200).json(tickets[0]);
+  } catch (error) {
+    console.error("Error fetching ticket:", error);
+    res.status(500).json({ error: "Failed to fetch ticket" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Users/AdminsController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+export const getAdmins = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT id, first_name, last_name, email, created_at FROM users WHERE role = 'admin'`,
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching admins:", error);
+    res.status(500).json({ error: "Failed to fetch admins" });
+  }
+};
+
+export const updateAdmin = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { first_name, last_name, email } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ? AND role = 'admin'`,
+      [first_name, last_name, email, id],
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Admin not found" });
+    }
+
+    res.status(200).json({ id, first_name, last_name, email });
+  } catch (error) {
+    console.error("Error updating admin:", error);
+    res.status(500).json({ error: "Failed to update admin" });
+  }
+};
+
+export const deleteAdmin = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(
+      `DELETE FROM users WHERE id = ? AND role = 'admin'`,
+      [id],
+    );
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Admin not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting admin:", error);
+    res.status(500).json({ error: "Failed to delete admin" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Users/AgentsController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+export const getAgents = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT id, first_name, last_name, email, created_at FROM users WHERE role = 'agent'`,
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching agents:", error);
+    res.status(500).json({ error: "Failed to fetch agents" });
+  }
+};
+
+export const updateAgent = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { first_name, last_name, email } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ? AND role = 'agent'`,
+      [first_name, last_name, email, id],
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Agent not found" });
+    }
+
+    res.status(200).json({ id, first_name, last_name, email });
+  } catch (error) {
+    console.error("Error updating agent:", error);
+    res.status(500).json({ error: "Failed to update agent" });
+  }
+};
+
+export const deleteAgent = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(
+      `DELETE FROM users WHERE id = ? AND role = 'agent'`,
+      [id],
+    );
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Agent not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting agent:", error);
+    res.status(500).json({ error: "Failed to delete agent" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Users/CustomersController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+export const getCustomers = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT id, first_name, last_name, email, created_at FROM users WHERE role = 'customer'`,
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching customers:", error);
+    res.status(500).json({ error: "Failed to fetch customers" });
+  }
+};
+
+export const updateCustomer = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { first_name, last_name, email } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ? AND role = 'customer'`,
+      [first_name, last_name, email, id],
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Customer not found" });
+    }
+
+    res.status(200).json({ id, first_name, last_name, email });
+  } catch (error) {
+    console.error("Error updating customer:", error);
+    res.status(500).json({ error: "Failed to update customer" });
+  }
+};
+
+export const deleteCustomer = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(
+      `DELETE FROM users WHERE id = ? AND role = 'customer'`,
+      [id],
+    );
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Customer not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting customer:", error);
+    res.status(500).json({ error: "Failed to delete customer" });
+  }
+};
+</file>
+
+<file path="server/src/controller/AttachmentsController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../config/railway.ts";
+
+export const getAttachmentsByTicket = async (req: Request, res: Response) => {
+  try {
+    const { ticketId } = req.params;
+
+    const [rows] = await pool.query(
+      `SELECT * FROM attachments WHERE ticket_id = ? ORDER BY uploaded_at DESC`,
+      [ticketId],
+    );
+
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching attachments:", error);
+    res.status(500).json({ error: "Failed to fetch attachments" });
+  }
+};
+
+export const createAttachment = async (req: Request, res: Response) => {
+  try {
+    const { ticketId } = req.params;
+    const { file_name, file_path, file_size, uploaded_by } = req.body;
+
+    if (!file_name || !file_path || !file_size || !uploaded_by) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const [result] = await pool.query(
+      `INSERT INTO attachments (ticket_id, file_name, file_path, file_size, uploaded_by)
+       VALUES (?, ?, ?, ?, ?)`,
+      [ticketId, file_name, file_path, file_size, uploaded_by],
+    );
+
+    const insertId = (result as { insertId: number }).insertId;
+
+    res.status(201).json({
+      id: insertId,
+      ticket_id: ticketId,
+      file_name,
+      file_path,
+      file_size,
+      uploaded_by,
+    });
+  } catch (error) {
+    console.error("Error creating attachment:", error);
+    res.status(500).json({ error: "Failed to create attachment" });
+  }
+};
+
+export const deleteAttachment = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(`DELETE FROM attachments WHERE id = ?`, [
+      id,
+    ]);
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Attachment not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting attachment:", error);
+    res.status(500).json({ error: "Failed to delete attachment" });
+  }
+};
+</file>
+
+<file path="server/src/controller/CategoriesController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../config/railway.ts";
+
+export const getCategories = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(`SELECT * FROM categories ORDER BY name`);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    res.status(500).json({ error: "Failed to fetch categories" });
+  }
+};
+
+export const createCategory = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.body;
+    if (!name) {
+      return res.status(400).json({ error: "Name is required" });
+    }
+
+    const [result] = await pool.query(
+      `INSERT INTO categories (name) VALUES (?)`,
+      [name],
+    );
+    const insertId = (result as { insertId: number }).insertId;
+
+    res.status(201).json({ id: insertId, name });
+  } catch (error) {
+    console.error("Error creating category:", error);
+    res.status(500).json({ error: "Failed to create category" });
+  }
+};
+
+export const updateCategory = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ error: "Name is required" });
+    }
+
+    const [result] = await pool.query(
+      `UPDATE categories SET name = ? WHERE id = ?`,
+      [name, id],
+    );
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    res.status(200).json({ id, name });
+  } catch (error) {
+    console.error("Error updating category:", error);
+    res.status(500).json({ error: "Failed to update category" });
+  }
+};
+
+export const deleteCategory = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(`DELETE FROM categories WHERE id = ?`, [
+      id,
+    ]);
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting category:", error);
+    res.status(500).json({ error: "Failed to delete category" });
+  }
+};
+</file>
+
+<file path="server/src/controller/CommentsController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../config/railway.ts";
+
+export const getCommentsByTicket = async (req: Request, res: Response) => {
+  try {
+    const { ticketId } = req.params;
+
+    const [rows] = await pool.query(
+      `SELECT * FROM comments WHERE ticket_id = ? ORDER BY created_at ASC`,
+      [ticketId],
+    );
+
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ error: "Failed to fetch comments" });
+  }
+};
+
+export const createComment = async (req: Request, res: Response) => {
+  try {
+    const { ticketId } = req.params;
+    const { user_id, message } = req.body;
+
+    if (!user_id || !message) {
+      return res
+        .status(400)
+        .json({ error: "user_id and message are required" });
+    }
+
+    const [result] = await pool.query(
+      `INSERT INTO comments (ticket_id, user_id, message) VALUES (?, ?, ?)`,
+      [ticketId, user_id, message],
+    );
+
+    const insertId = (result as { insertId: number }).insertId;
+
+    res
+      .status(201)
+      .json({ id: insertId, ticket_id: ticketId, user_id, message });
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    res.status(500).json({ error: "Failed to create comment" });
+  }
+};
+
+export const deleteComment = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(`DELETE FROM comments WHERE id = ?`, [
+      id,
+    ]);
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({ error: "Failed to delete comment" });
+  }
+};
+</file>
+
+<file path="server/src/controller/PrioritiesController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../config/railway.ts";
+
+export const getPriorities = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(`SELECT * FROM priorities ORDER BY id`);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching priorities:", error);
+    res.status(500).json({ error: "Failed to fetch priorities" });
+  }
+};
+
+export const createPriority = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.body;
+    if (!name) {
+      return res.status(400).json({ error: "Name is required" });
+    }
+
+    const [result] = await pool.query(
+      `INSERT INTO priorities (name) VALUES (?)`,
+      [name],
+    );
+    const insertId = (result as { insertId: number }).insertId;
+
+    res.status(201).json({ id: insertId, name });
+  } catch (error) {
+    console.error("Error creating priority:", error);
+    res.status(500).json({ error: "Failed to create priority" });
+  }
+};
+
+export const updatePriority = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ error: "Name is required" });
+    }
+
+    const [result] = await pool.query(
+      `UPDATE priorities SET name = ? WHERE id = ?`,
+      [name, id],
+    );
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Priority not found" });
+    }
+
+    res.status(200).json({ id, name });
+  } catch (error) {
+    console.error("Error updating priority:", error);
+    res.status(500).json({ error: "Failed to update priority" });
+  }
+};
+
+export const deletePriority = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(`DELETE FROM priorities WHERE id = ?`, [
+      id,
+    ]);
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Priority not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting priority:", error);
+    res.status(500).json({ error: "Failed to delete priority" });
+  }
+};
+</file>
+
+<file path="server/src/controller/ReportsController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../config/railway.ts";
+
+// Ticket counts grouped by status
+export const getTicketsByStatus = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT s.name AS status, COUNT(t.id) AS count
+       FROM statuses s
+       LEFT JOIN tickets t ON t.status_id = s.id
+       GROUP BY s.id, s.name`,
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error generating status report:", error);
+    res.status(500).json({ error: "Failed to generate report" });
+  }
+};
+
+// Ticket counts grouped by priority
+export const getTicketsByPriority = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT p.name AS priority, COUNT(t.id) AS count
+       FROM priorities p
+       LEFT JOIN tickets t ON t.priority_id = p.id
+       GROUP BY p.id, p.name`,
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error generating priority report:", error);
+    res.status(500).json({ error: "Failed to generate report" });
+  }
+};
+
+// Open ticket counts per agent
+export const getAgentWorkload = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT u.id, u.first_name, u.last_name, COUNT(t.id) AS open_tickets
+       FROM users u
+       LEFT JOIN tickets t ON t.assigned_to = u.id AND t.closed_at IS NULL
+       WHERE u.role = 'agent'
+       GROUP BY u.id, u.first_name, u.last_name`,
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error generating agent workload report:", error);
+    res.status(500).json({ error: "Failed to generate report" });
+  }
+};
+
+// Average resolution time in hours
+export const getAverageResolutionTime = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT AVG(TIMESTAMPDIFF(HOUR, created_at, closed_at)) AS avg_hours
+       FROM tickets
+       WHERE closed_at IS NOT NULL`,
+    );
+    res.status(200).json((rows as unknown[])[0]);
+  } catch (error) {
+    console.error("Error generating resolution time report:", error);
+    res.status(500).json({ error: "Failed to generate report" });
+  }
+};
+</file>
+
+<file path="server/src/controller/StatusesController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../config/railway.ts";
+
+export const getStatuses = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(`SELECT * FROM statuses ORDER BY id`);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching statuses:", error);
+    res.status(500).json({ error: "Failed to fetch statuses" });
+  }
+};
+
+export const createStatus = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.body;
+    if (!name) {
+      return res.status(400).json({ error: "Name is required" });
+    }
+
+    const [result] = await pool.query(
+      `INSERT INTO statuses (name) VALUES (?)`,
+      [name],
+    );
+    const insertId = (result as { insertId: number }).insertId;
+
+    res.status(201).json({ id: insertId, name });
+  } catch (error) {
+    console.error("Error creating status:", error);
+    res.status(500).json({ error: "Failed to create status" });
+  }
+};
+
+export const updateStatus = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ error: "Name is required" });
+    }
+
+    const [result] = await pool.query(
+      `UPDATE statuses SET name = ? WHERE id = ?`,
+      [name, id],
+    );
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Status not found" });
+    }
+
+    res.status(200).json({ id, name });
+  } catch (error) {
+    console.error("Error updating status:", error);
+    res.status(500).json({ error: "Failed to update status" });
+  }
+};
+
+export const deleteStatus = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(`DELETE FROM statuses WHERE id = ?`, [
+      id,
+    ]);
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Status not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting status:", error);
+    res.status(500).json({ error: "Failed to delete status" });
+  }
+};
+</file>
+
+<file path="server/src/envConfig.ts">
+import dotenv from "dotenv";
+import type { SignOptions } from "jsonwebtoken";
+
+dotenv.config();
+
+function getEnvVar(key: string, fallback?: string): string {
+  const value = process.env[key] || fallback;
+  if (value === undefined) {
+    throw new Error(`Missing required environment variable: ${key}`);
+  }
+  return value;
+}
+
+export const config = {
+  port: Number(getEnvVar("PORT", "5000")),
+  db: {
+    host: getEnvVar("DB_HOST"),
+    port: Number(getEnvVar("DB_PORT", "3306")),
+    user: getEnvVar("DB_USER"),
+    password: getEnvVar("DB_PASSWORD", ""),
+    database: getEnvVar("DB_NAME"),
+  },
+  jwt: {
+    secret: getEnvVar("JWT_SECRET"),
+    expiresIn: (process.env.JWT_EXPIRES_IN || "1d") as NonNullable<
+      SignOptions["expiresIn"]
+    >,
+  },
+};
+
+console.log(`-----------------------------------`);
+console.log(`port: ${config.port}`);
+console.log(`Database connected to host: ${config.db.host}`);
+console.log(`-----------------------------------`);
+</file>
+
+<file path="server/src/server.ts">
+import express, { type Request, type Response } from "express";
+import { config } from "./envConfig.ts";
+import { pool } from "./config/railway.ts";
+import cors from 'cors';
+
+const app = express();
+
+// Middlewares
+app.use(express.json());
+app.use(cors());
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Server's running");
+});
+
+const startServer = async () => {
+  try {
+    const connection = await pool.getConnection();
+    console.log("Successfully connected to Railway MySQL database!");
+    connection.release(); // Release the connection back to the pool
+    app.listen(config.port, () => {
+      console.log(`Server is running on http://localhost:${config.port}`);
+      console.log(`-----------------------------------`);
+    });
+  } catch (error) {
+    console.error(" Failed to connect to the database:", error);
+    process.exit(1); // Exit process with failure code
+  }
+};
+
+startServer();
+</file>
+
+<file path="server/package.json">
+{
+  "dependencies": {
+    "@types/cors": "^2.8.19",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mysql2": "^3.23.2"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.1.2",
+    "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.3",
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2"
+  },
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
+</file>
+
+</files>

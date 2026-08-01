@@ -4,7 +4,7 @@ import { pool } from "../../config/railway.ts";
 export const getAgents = async (req: Request, res: Response) => {
   try {
     const [rows] = await pool.query(
-      `SELECT id, first_name, last_name, email, created_at FROM users WHERE role = 'agent'`,
+      `SELECT id, first_name, last_name, email, create_at FROM users WHERE role = 'agent'`,
     );
     res.status(200).json(rows);
   } catch (error) {

@@ -2,6 +2,15 @@ import express, { type Request, type Response } from "express";
 import { config } from "./envConfig.ts";
 import { pool } from "./config/railway.ts";
 import cors from 'cors';
+import authRoutes from "./routes/AuthRoutes.ts";
+import ticketRoutes from "./routes/TicketRoutes.ts";
+import commentRoutes from "./routes/CommentRoutes.ts";
+import attachmentRoutes from "./routes/AttachmentRoutes.ts";
+import categoryRoutes from "./routes/CategoryRoutes.ts";
+import priorityRoutes from "./routes/PriorityRoutes.ts";
+import statusRoutes from "./routes/StatusRoutes.ts";
+import userRoutes from "./routes/UserRoutes.ts";
+import reportRoutes from "./routes/ReportRoutes.ts";
 
 const app = express();
 
@@ -12,6 +21,16 @@ app.use(cors());
 app.get("/", (req: Request, res: Response) => {
   res.send("Server's running");
 });
+
+app.use("/auth", authRoutes);
+app.use("/tickets", ticketRoutes);
+app.use("/comments", commentRoutes);
+app.use("/attachments", attachmentRoutes);
+app.use("/categories", categoryRoutes);
+app.use("/priorities", priorityRoutes);
+app.use("/statuses", statusRoutes);
+app.use("/users", userRoutes);
+app.use("/reports", reportRoutes);
 
 const startServer = async () => {
   try {
