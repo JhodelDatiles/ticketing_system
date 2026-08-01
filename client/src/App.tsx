@@ -2,8 +2,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Tickets from "./pages/Tickets";
 
 const App = () => {
   return (
@@ -17,7 +19,9 @@ const App = () => {
             path="/"
             element={
               <ProtectedRoute>
-                <div>Dashboard placeholder</div>
+                <Layout>
+                  <Tickets />
+                </Layout>
               </ProtectedRoute>
             }
           />

@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { ReactNode } from "react";
 import api from "../lib/api";
 import { AuthContext } from "./auth-context";
-import type { User, RegisterPayload } from "./auth-context";
+import type { User, RegisterPayload } from "../types/useAuth";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   // 1. Read from localStorage synchronously during initialization
