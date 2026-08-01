@@ -8,7 +8,7 @@ router.use(authenticateJWT);
 
 router.get("/", getPriorities);
 router.post("/", authorizeRoles("admin"), createPriority);
-router.patch("/:id", authorizeRoles("admin"), updatePriority);
+router.put("/:id", authorizeRoles("admin"), updatePriority);
 router.delete("/:id", authorizeRoles("admin"), deletePriority);
 
 export default router;

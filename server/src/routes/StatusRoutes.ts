@@ -8,7 +8,7 @@ router.use(authenticateJWT);
 
 router.get("/", getStatuses);
 router.post("/", authorizeRoles("admin"), createStatus);
-router.patch("/:id", authorizeRoles("admin"), updateStatus);
+router.put("/:id", authorizeRoles("admin"), updateStatus);
 router.delete("/:id", authorizeRoles("admin"), deleteStatus);
 
 export default router;
