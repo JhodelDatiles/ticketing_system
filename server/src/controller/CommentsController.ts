@@ -37,7 +37,7 @@ export const createComment = async (req: Request, res: Response) => {
 
     res
       .status(201)
-      .json({ id: insertId, ticket_id: ticketId, user_id, message });
+      .json({ id: insertId, ticket_id: ticketId, user_id, message, created_at: new Date().toISOString() });
   } catch (error) {
     console.error("Error creating comment:", error);
     res.status(500).json({ error: "Failed to create comment" });

@@ -1,6 +1,11 @@
 import type { Request, Response } from "express";
 import { pool } from "../../config/railway.ts";
 
+interface AgentRow {
+  id: number;
+  role: string;
+}
+
 export const assignTicket = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -8,6 +13,16 @@ export const assignTicket = async (req: Request, res: Response) => {
 
     if (!assigned_to) {
       return res.status(400).json({ error: "assigned_to is required" });
+    }
+
+    const [agentRows] = await pool.query(
+      `SELECT id, role FROM users WHERE id = ?`,
+      [assigned_to],
+    );
+    const agent = (agentRows as AgentRow[])[0];
+
+    if (!agent || agent.role !== "agent") {
+      return res.status(400).json({ error: "assigned_to must be a valid agent" });
     }
 
     const [result] = await pool.query(

@@ -6,6 +6,8 @@ import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Tickets from "./pages/Tickets";
+import TicketDetail from "./pages/TicketDetail";
+import TicketForm from "./pages/TicketForm";
 
 const App = () => {
   return (
@@ -21,6 +23,36 @@ const App = () => {
               <ProtectedRoute>
                 <Layout>
                   <Tickets />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tickets/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <TicketDetail />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tickets/new"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <TicketForm />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tickets/:id/edit"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <TicketForm />
                 </Layout>
               </ProtectedRoute>
             }
