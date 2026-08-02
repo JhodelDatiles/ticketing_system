@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import api from "../lib/api";
-import { getErrorMessage } from "../lib/api";
+import api, { getErrorMessage } from "../lib/api";
 import type { Ticket, LookupItem } from "../types/tickets";
 
 export default function Tickets() {

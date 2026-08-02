@@ -4,12 +4,21 @@ import api from "../lib/api";
 import { AuthContext } from "./auth-context";
 import type { User, RegisterPayload } from "../types/useAuth";
 
+function readStoredUser(): User | null {
+  const storedUser = localStorage.getItem("user");
+  if (!storedUser) return null;
+  try {
+    return JSON.parse(storedUser) as User;
+  } catch {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    return null;
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   // 1. Read from localStorage synchronously during initialization
-  const [user, setUser] = useState<User | null>(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const [user, setUser] = useState<User | null>(readStoredUser);
 
   // 2. Keep a static value for the context interface without using state
   const loading = false;
