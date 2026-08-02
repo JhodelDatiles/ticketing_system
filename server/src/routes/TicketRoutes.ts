@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authenticateJWT } from "../controller/Authentication/JWTController.ts";
+import { authenticateJWT, authorizeRoles  } from "../controller/Authentication/JWTController.ts";
 import { createTicket } from "../controller/Tickets/CreateController.ts";
 import { getTickets, getTicketById } from "../controller/Tickets/ViewController.ts";
 import { updateTicket } from "../controller/Tickets/UpdateController.ts";
@@ -13,11 +13,11 @@ const router = Router();
 router.use(authenticateJWT);
 
 router.get("/", getTickets);
-router.get("/:id", getTicketById);
+router.get("/:id", getTicketById);  
 router.post("/", createTicket);
 router.put("/:id", updateTicket);
 router.delete("/:id", deleteTicket);
-router.put("/:id/assign", assignTicket);
+router.put("/:id/assign", authorizeRoles("admin", "agent"), assignTicket);
 
 router.get("/:ticketId/comments", getCommentsByTicket);
 router.post("/:ticketId/comments", createComment);
