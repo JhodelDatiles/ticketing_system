@@ -117,7 +117,6 @@ export default function TicketForm() {
           description: form.description,
           category_id: Number(form.category_id),
           priority_id: Number(form.priority_id),
-          created_by: user.id,
         });
         toast.success("Ticket created");
         navigate(`/tickets/${data.id}`);

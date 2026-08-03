@@ -7,6 +7,7 @@ import { deleteTicket } from "../controller/Tickets/DeleteController.ts";
 import { assignTicket } from "../controller/Tickets/AssignController.ts";
 import { getCommentsByTicket, createComment } from "../controller/CommentsController.ts";
 import { getAttachmentsByTicket, createAttachment } from "../controller/AttachmentsController.ts";
+import { getTicketHistory } from "../controller/Tickets/TicketHistoryController.ts";
 
 const router = Router();
 
@@ -14,6 +15,7 @@ router.use(authenticateJWT);
 
 router.get("/", getTickets);
 router.get("/:id", getTicketById);  
+router.get("/:ticketId/history", authenticateJWT, getTicketHistory);
 router.post("/", createTicket);
 router.put("/:id", updateTicket);
 router.delete("/:id", deleteTicket);

@@ -16,14 +16,14 @@ export const createTicket = async (req: Request, res: Response) => {
       description,
       category_id,
       priority_id,
-      created_by,
       assigned_to,
     } = req.body;
 
-    if (!title || !description || !category_id || !priority_id || !created_by) {
+    if (!title || !description || !category_id || !priority_id) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
+    const created_by = req.user!.id;
     const ticket_number = generateTicketNumber();
 
     const [result] = await pool.query(
