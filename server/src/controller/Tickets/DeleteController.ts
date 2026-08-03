@@ -5,7 +5,10 @@ export const deleteTicket = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const [result] = await pool.query(`DELETE FROM tickets WHERE id = ?`, [id]);
+    const [result] = await pool.query(
+      `UPDATE tickets SET deleted_at = NOW() WHERE id = ? AND deleted_at IS NULL`,
+      [id],
+    );
 
     const affectedRows = (result as { affectedRows: number }).affectedRows;
 

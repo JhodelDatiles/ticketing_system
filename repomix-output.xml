@@ -40,6 +40,46 @@ The content is organized as follows:
 </file_summary>
 
 <directory_structure>
+client/
+  public/
+    favicon.svg
+    icons.svg
+  src/
+    assets/
+      hero.png
+      react.svg
+      vite.svg
+    components/
+      Layout.tsx
+      Navbar.tsx
+      ProtectedRoute.tsx
+    context/
+      auth-context.tsx
+      AuthContext.tsx
+    lib/
+      api.ts
+    pages/
+      Login.tsx
+      Register.tsx
+      TicketDetail.tsx
+      TicketForm.tsx
+      Tickets.tsx
+    types/
+      tickets.ts
+      useAuth.ts
+    App.tsx
+    index.css
+    main.tsx
+    vite-env.d.ts
+  .gitignore
+  eslint.config.js
+  index.html
+  package.json
+  README.md
+  tsconfig.app.json
+  tsconfig.json
+  tsconfig.node.json
+  vite.config.ts
 server/
   src/
     config/
@@ -53,6 +93,7 @@ server/
         AssignController.ts
         CreateController.ts
         DeleteController.ts
+        TicketHistoryController.ts
         UpdateController.ts
         ViewController.ts
       Users/
@@ -65,6 +106,16 @@ server/
       PrioritiesController.ts
       ReportsController.ts
       StatusesController.ts
+    routes/
+      AttachmentRoutes.ts
+      AuthRoutes.ts
+      CategoryRoutes.ts
+      CommentRoutes.ts
+      PriorityRoutes.ts
+      ReportRoutes.ts
+      StatusRoutes.ts
+      TicketRoutes.ts
+      UserRoutes.ts
     envConfig.ts
     server.ts
   package.json
@@ -74,6 +125,1051 @@ server/
 
 <files>
 This section contains the contents of the repository's files.
+
+<file path="server/src/controller/Tickets/TicketHistoryController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+export const getTicketHistory = async (req: Request, res: Response) => {
+  try {
+    const { ticketId } = req.params;
+
+    const [rows] = await pool.query(
+      `SELECT h.*, u.first_name, u.last_name
+       FROM ticket_history h
+       JOIN users u ON u.id = h.user_id
+       WHERE h.ticket_id = ?
+       ORDER BY h.created_at DESC`,
+      [ticketId],
+    );
+
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching ticket history:", error);
+    res.status(500).json({ error: "Failed to fetch ticket history" });
+  }
+};
+</file>
+
+<file path="client/public/favicon.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46"><path fill="#863bff" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z" style="fill:#863bff;fill:color(display-p3 .5252 .23 1);fill-opacity:1"/><mask id="a" width="48" height="46" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z" style="fill:#000;fill-opacity:1"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#ede6ff" rx="5.508" ry="14.704" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#ede6ff" rx="10.399" ry="29.851" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#7e14ff" rx="5.508" ry="30.487" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -32.644 -3.334)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -34.34 30.47)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#ede6ff" rx="14.072" ry="22.078" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="rotate(93.35 24.506 48.493)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx=".387" cy="8.972" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(39.51 .387 8.972)"/></g><g filter="url(#k)"><ellipse cx="47.523" cy="-6.092" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 47.523 -6.092)"/></g><g filter="url(#l)"><ellipse cx="41.412" cy="6.333" fill="#47bfff" rx="5.971" ry="9.665" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 41.412 6.333)"/></g><g filter="url(#m)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#n)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#o)"><ellipse cx="35.651" cy="29.907" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 35.651 29.907)"/></g><g filter="url(#p)"><ellipse cx="38.418" cy="32.4" fill="#47bfff" rx="5.971" ry="15.297" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 38.418 32.4)"/></g></g><defs><filter id="b" width="60.045" height="41.654" x="-19.77" y="16.149" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-54.613" y="-7.533" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-49.64" y="2.03" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-45.045" y="20.029" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-43.513" y="21.178" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="15.756" y="-17.901" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-27.636" y="-22.853" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="20.116" y="-38.415" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="24.641" y="-11.323" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="8.244" y="-2.416" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="18.713" y="10.588" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter></defs></svg>
+</file>
+
+<file path="client/public/icons.svg">
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="bluesky-icon" viewBox="0 0 16 17">
+    <g clip-path="url(#bluesky-clip)"><path fill="#08060d" d="M7.75 7.735c-.693-1.348-2.58-3.86-4.334-5.097-1.68-1.187-2.32-.981-2.74-.79C.188 2.065.1 2.812.1 3.251s.241 3.602.398 4.13c.52 1.744 2.367 2.333 4.07 2.145-2.495.37-4.71 1.278-1.805 4.512 3.196 3.309 4.38-.71 4.987-2.746.608 2.036 1.307 5.91 4.93 2.746 2.72-2.746.747-4.143-1.747-4.512 1.702.189 3.55-.4 4.07-2.145.156-.528.397-3.691.397-4.13s-.088-1.186-.575-1.406c-.42-.19-1.06-.395-2.741.79-1.755 1.24-3.64 3.752-4.334 5.099"/></g>
+    <defs><clipPath id="bluesky-clip"><path fill="#fff" d="M.1.85h15.3v15.3H.1z"/></clipPath></defs>
+  </symbol>
+  <symbol id="discord-icon" viewBox="0 0 20 19">
+    <path fill="#08060d" d="M16.224 3.768a14.5 14.5 0 0 0-3.67-1.153c-.158.286-.343.67-.47.976a13.5 13.5 0 0 0-4.067 0c-.128-.306-.317-.69-.476-.976A14.4 14.4 0 0 0 3.868 3.77C1.546 7.28.916 10.703 1.231 14.077a14.7 14.7 0 0 0 4.5 2.306q.545-.748.965-1.587a9.5 9.5 0 0 1-1.518-.74q.191-.14.372-.293c2.927 1.369 6.107 1.369 8.999 0q.183.152.372.294-.723.437-1.52.74.418.838.963 1.588a14.6 14.6 0 0 0 4.504-2.308c.37-3.911-.63-7.302-2.644-10.309m-9.13 8.234c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.894 0 1.614.82 1.599 1.82.001 1-.705 1.82-1.6 1.82m5.91 0c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.893 0 1.614.82 1.599 1.82 0 1-.706 1.82-1.6 1.82"/>
+  </symbol>
+  <symbol id="documentation-icon" viewBox="0 0 21 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="m15.5 13.333 1.533 1.322c.645.555.967.833.967 1.178s-.322.623-.967 1.179L15.5 18.333m-3.333-5-1.534 1.322c-.644.555-.966.833-.966 1.178s.322.623.966 1.179l1.534 1.321"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M17.167 10.836v-4.32c0-1.41 0-2.117-.224-2.68-.359-.906-1.118-1.621-2.08-1.96-.599-.21-1.349-.21-2.848-.21-2.623 0-3.935 0-4.983.369-1.684.591-3.013 1.842-3.641 3.428C3 6.449 3 7.684 3 10.154v2.122c0 2.558 0 3.838.706 4.726q.306.383.713.671c.76.536 1.79.64 3.581.66"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M3 10a2.78 2.78 0 0 1 2.778-2.778c.555 0 1.209.097 1.748-.047.48-.129.854-.503.982-.982.145-.54.048-1.194.048-1.749a2.78 2.78 0 0 1 2.777-2.777"/>
+  </symbol>
+  <symbol id="github-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M9.356 1.85C5.05 1.85 1.57 5.356 1.57 9.694a7.84 7.84 0 0 0 5.324 7.44c.387.079.528-.168.528-.376 0-.182-.013-.805-.013-1.454-2.165.467-2.616-.935-2.616-.935-.349-.91-.864-1.143-.864-1.143-.71-.48.051-.48.051-.48.787.051 1.2.805 1.2.805.695 1.194 1.817.857 2.268.649.064-.507.27-.857.49-1.052-1.728-.182-3.545-.857-3.545-3.87 0-.857.31-1.558.8-2.104-.078-.195-.349-1 .077-2.078 0 0 .657-.208 2.14.805a7.5 7.5 0 0 1 1.946-.26c.657 0 1.328.092 1.946.26 1.483-1.013 2.14-.805 2.14-.805.426 1.078.155 1.883.078 2.078.502.546.799 1.247.799 2.104 0 3.013-1.818 3.675-3.558 3.87.284.247.528.714.528 1.454 0 1.052-.012 1.896-.012 2.156 0 .208.142.455.528.377a7.84 7.84 0 0 0 5.324-7.441c.013-4.338-3.48-7.844-7.773-7.844" clip-rule="evenodd"/>
+  </symbol>
+  <symbol id="social-icon" viewBox="0 0 20 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M12.5 6.667a4.167 4.167 0 1 0-8.334 0 4.167 4.167 0 0 0 8.334 0"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M2.5 16.667a5.833 5.833 0 0 1 8.75-5.053m3.837.474.513 1.035c.07.144.257.282.414.309l.93.155c.596.1.736.536.307.965l-.723.73a.64.64 0 0 0-.152.531l.207.903c.164.715-.213.991-.84.618l-.872-.52a.63.63 0 0 0-.577 0l-.872.52c-.624.373-1.003.094-.84-.618l.207-.903a.64.64 0 0 0-.152-.532l-.723-.729c-.426-.43-.289-.864.306-.964l.93-.156a.64.64 0 0 0 .412-.31l.513-1.034c.28-.562.735-.562 1.012 0"/>
+  </symbol>
+  <symbol id="x-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M1.893 1.98c.052.072 1.245 1.769 2.653 3.77l2.892 4.114c.183.261.333.48.333.486s-.068.089-.152.183l-.522.593-.765.867-3.597 4.087c-.375.426-.734.834-.798.905a1 1 0 0 0-.118.148c0 .01.236.017.664.017h.663l.729-.83c.4-.457.796-.906.879-.999a692 692 0 0 0 1.794-2.038c.034-.037.301-.34.594-.675l.551-.624.345-.392a7 7 0 0 1 .34-.374c.006 0 .93 1.306 2.052 2.903l2.084 2.965.045.063h2.275c1.87 0 2.273-.003 2.266-.021-.008-.02-1.098-1.572-3.894-5.547-2.013-2.862-2.28-3.246-2.273-3.266.008-.019.282-.332 2.085-2.38l2-2.274 1.567-1.782c.022-.028-.016-.03-.65-.03h-.674l-.3.342a871 871 0 0 1-1.782 2.025c-.067.075-.405.458-.75.852a100 100 0 0 1-.803.91c-.148.172-.299.344-.99 1.127-.304.343-.32.358-.345.327-.015-.019-.904-1.282-1.976-2.808L6.365 1.85H1.8zm1.782.91 8.078 11.294c.772 1.08 1.413 1.973 1.425 1.984.016.017.241.02 1.05.017l1.03-.004-2.694-3.766L7.796 5.75 5.722 2.852l-1.039-.004-1.039-.004z" clip-rule="evenodd"/>
+  </symbol>
+</svg>
+</file>
+
+<file path="client/src/assets/react.svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
+</file>
+
+<file path="client/src/assets/vite.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="77" height="47" fill="none" aria-labelledby="vite-logo-title" viewBox="0 0 77 47"><title id="vite-logo-title">Vite</title><style>.parenthesis{fill:#000}@media (prefers-color-scheme:dark){.parenthesis{fill:#fff}}</style><path fill="#9135ff" d="M40.151 45.71c-.663.844-2.02.374-2.02-.699V34.708a2.26 2.26 0 0 0-2.262-2.262H24.493c-.92 0-1.457-1.04-.92-1.788l7.479-10.471c1.07-1.498 0-3.578-1.842-3.578H15.443c-.92 0-1.456-1.04-.92-1.788l9.696-13.576c.213-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.472c-1.07 1.497 0 3.578 1.842 3.578h11.376c.944 0 1.474 1.087.89 1.83L40.153 45.712z"/><mask id="a" width="48" height="47" x="14" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M40.047 45.71c-.663.843-2.02.374-2.02-.699V34.708a2.26 2.26 0 0 0-2.262-2.262H24.389c-.92 0-1.457-1.04-.92-1.788l7.479-10.472c1.07-1.497 0-3.578-1.842-3.578H15.34c-.92 0-1.456-1.04-.92-1.788l9.696-13.575c.213-.297.556-.474.92-.474H53.93c.92 0 1.456 1.04.92 1.788L47.37 13.03c-1.07 1.498 0 3.578 1.842 3.578h11.376c.944 0 1.474 1.088.89 1.831L40.049 45.712z"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#eee6ff" rx="5.508" ry="14.704" transform="rotate(269.814 20.96 11.29)scale(-1 1)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#eee6ff" rx="10.399" ry="29.851" transform="rotate(89.814 -16.902 -8.275)scale(1 -1)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#8900ff" rx="5.508" ry="30.487" transform="rotate(89.814 -19.197 -7.127)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#8900ff" rx="5.508" ry="30.599" transform="rotate(89.814 -25.928 4.177)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#8900ff" rx="5.508" ry="30.599" transform="rotate(89.814 -25.738 5.52)scale(1 -1)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#eee6ff" rx="14.072" ry="22.078" transform="rotate(93.35 31.245 55.578)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#8900ff" rx="3.47" ry="21.501" transform="rotate(89.009 35.419 55.202)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#8900ff" rx="3.47" ry="21.501" transform="rotate(89.009 35.419 55.202)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx="14.592" cy="9.743" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(39.51 14.592 9.743)"/></g><g filter="url(#k)"><ellipse cx="61.728" cy="-5.321" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 61.728 -5.32)"/></g><g filter="url(#l)"><ellipse cx="55.618" cy="7.104" fill="#00c2ff" rx="5.971" ry="9.665" transform="rotate(37.892 55.618 7.104)"/></g><g filter="url(#m)"><ellipse cx="12.326" cy="39.103" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 12.326 39.103)"/></g><g filter="url(#n)"><ellipse cx="12.326" cy="39.103" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 12.326 39.103)"/></g><g filter="url(#o)"><ellipse cx="49.857" cy="30.678" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 49.857 30.678)"/></g><g filter="url(#p)"><ellipse cx="52.623" cy="33.171" fill="#00c2ff" rx="5.971" ry="15.297" transform="rotate(37.892 52.623 33.17)"/></g></g><path d="M6.919 0c-9.198 13.166-9.252 33.575 0 46.789h6.215c-9.25-13.214-9.196-33.623 0-46.789zm62.424 0h-6.215c9.198 13.166 9.252 33.575 0 46.789h6.215c9.25-13.214 9.196-33.623 0-46.789" class="parenthesis"/><defs><filter id="b" width="60.045" height="41.654" x="-5.564" y="16.92" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-40.407" y="-6.762" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-35.435" y="2.801" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-30.84" y="20.8" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-29.307" y="21.949" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="29.961" y="-17.13" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="37.754" y="3.055" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="37.754" y="3.055" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-13.43" y="-22.082" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="34.321" y="-37.644" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="38.847" y="-10.552" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-15.081" y="6.78" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-15.081" y="6.78" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="22.45" y="-1.645" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="32.919" y="11.36" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter></defs></svg>
+</file>
+
+<file path="client/src/components/Layout.tsx">
+import type { ReactNode } from "react";
+import Navbar from "./Navbar";
+
+export default function Layout({ children }: { children: ReactNode }) {
+  return (
+    <div className="min-h-screen bg-base-200">
+      <Navbar />
+      <div className="p-4">{children}</div>
+    </div>
+  );
+}
+</file>
+
+<file path="client/src/components/Navbar.tsx">
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/auth-context";
+
+export default function Navbar() {
+  const { user, logout } = useAuth();
+
+  return (
+    <div className="navbar bg-base-100 shadow-sm px-4">
+      <div className="flex-1">
+        <Link to="/" className="text-lg font-semibold">
+          Ticket Desk
+        </Link>
+      </div>
+      <div className="flex items-center gap-3">
+        {user && (
+          <span className="text-sm text-base-content/70">
+            {user.first_name} {user.last_name} · {user.role}
+          </span>
+        )}
+        <button className="btn btn-sm btn-ghost" onClick={logout}>
+          Log out
+        </button>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="client/src/components/ProtectedRoute.tsx">
+import type { ReactNode } from "react";
+import { Navigate } from "react-router-dom";
+// 1. Import useAuth instead of AuthProvider
+import { useAuth } from "../context/auth-context"; 
+import type { Role } from "../context/auth-context";
+
+interface ProtectedRouteProps {
+  children: ReactNode;
+  allowedRoles?: Role[];
+}
+
+export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+}
+</file>
+
+<file path="client/src/lib/api.ts">
+import axios from "axios";
+
+// Error handler helper
+export function getErrorMessage(err: unknown, defaultMessage: string): string {
+  if (axios.isAxiosError(err)) {
+    return err.response?.data?.error || defaultMessage;
+  }
+  if (err instanceof Error) {
+    return err.message;
+  }
+  return defaultMessage;
+}
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      if (window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
+    }
+    return Promise.reject(error);
+  },
+);
+
+export default api;
+</file>
+
+<file path="client/src/pages/Login.tsx">
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuth } from "../context/auth-context";
+import { getErrorMessage } from "../lib/api";
+
+export default function Login() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await login(email, password);
+      navigate("/");
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, "Login failed"));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <form onSubmit={handleSubmit} className="card w-full max-w-sm bg-base-100 shadow-md p-6 gap-4">
+        <h1 className="text-xl font-semibold">Sign in</h1>
+
+        <label className="form-control">
+          <span className="label-text">Email</span>
+          <input
+            type="email"
+            className="input input-bordered w-full"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </label>
+
+        <label className="form-control">
+          <span className="label-text">Password</span>
+          <input
+            type="password"
+            className="input input-bordered w-full"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </label>
+
+        <button type="submit" className="btn btn-primary" disabled={submitting}>
+          {submitting ? "Signing in..." : "Sign in"}
+        </button>
+
+        <p className="text-sm text-center">
+          No account? <Link to="/register" className="link link-primary">Register</Link>
+        </p>
+      </form>
+    </div>
+  );
+}
+</file>
+
+<file path="client/src/pages/Register.tsx">
+import { useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuth } from "../context/auth-context";
+import { getErrorMessage } from "../lib/api";
+
+export default function Register() {
+  const { register } = useAuth();
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleChange = (field: keyof typeof form) => (e: ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await register(form);
+      navigate("/");
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, "Registration failed"));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <form onSubmit={handleSubmit} className="card w-full max-w-sm bg-base-100 shadow-md p-6 gap-4">
+        <h1 className="text-xl font-semibold">Create account</h1>
+
+        <label className="form-control">
+          <span className="label-text">First name</span>
+          <input className="input input-bordered w-full" value={form.first_name} onChange={handleChange("first_name")} required />
+        </label>
+
+        <label className="form-control">
+          <span className="label-text">Last name</span>
+          <input className="input input-bordered w-full" value={form.last_name} onChange={handleChange("last_name")} required />
+        </label>
+
+        <label className="form-control">
+          <span className="label-text">Email</span>
+          <input type="email" className="input input-bordered w-full" value={form.email} onChange={handleChange("email")} required />
+        </label>
+
+        <label className="form-control">
+          <span className="label-text">Password</span>
+          <input type="password" className="input input-bordered w-full" value={form.password} onChange={handleChange("password")} required />
+        </label>
+
+        <button type="submit" className="btn btn-primary" disabled={submitting}>
+          {submitting ? "Creating account..." : "Register"}
+        </button>
+
+        <p className="text-sm text-center">
+          Already have an account? <Link to="/login" className="link link-primary">Sign in</Link>
+        </p>
+      </form>
+    </div>
+  );
+}
+</file>
+
+<file path="client/src/pages/TicketDetail.tsx">
+import { useEffect, useState } from "react";
+import type { FormEvent } from "react";
+import { useParams, Link } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import api, { getErrorMessage } from "../lib/api";
+import { useAuth } from "../context/auth-context";
+import type { Ticket, LookupItem, Comment, Attachment } from "../types/tickets";
+
+export default function TicketDetail() {
+  const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
+
+  const [ticket, setTicket] = useState<Ticket | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [statuses, setStatuses] = useState<LookupItem[]>([]);
+  const [priorities, setPriorities] = useState<LookupItem[]>([]);
+  const [categories, setCategories] = useState<LookupItem[]>([]);
+
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+  const [newComment, setNewComment] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const load = async () => {
+      setLoading(true);
+      setNotFound(false);
+      try {
+        const [
+          ticketRes,
+          commentsRes,
+          attachmentsRes,
+          statusesRes,
+          prioritiesRes,
+          categoriesRes,
+        ] = await Promise.all([
+          api.get<Ticket>(`/tickets/${id}`),
+          api.get<Comment[]>(`/tickets/${id}/comments`),
+          api.get<Attachment[]>(`/tickets/${id}/attachments`),
+          api.get<LookupItem[]>("/statuses"),
+          api.get<LookupItem[]>("/priorities"),
+          api.get<LookupItem[]>("/categories"),
+        ]);
+        setTicket(ticketRes.data);
+        setComments(commentsRes.data);
+        setAttachments(attachmentsRes.data);
+        setStatuses(statusesRes.data);
+        setPriorities(prioritiesRes.data);
+        setCategories(categoriesRes.data);
+      } catch (err) {
+        if (axios.isAxiosError(err) && err.response?.status === 404) {
+          setNotFound(true);
+        } else {
+          toast.error(getErrorMessage(err, "Failed to load ticket"));
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
+  }, [id]);
+
+  const statusName = (statusId: number) =>
+    statuses.find((s) => s.id === statusId)?.name ?? "Unknown";
+  const priorityName = (priorityId: number) =>
+    priorities.find((p) => p.id === priorityId)?.name ?? "Unknown";
+  const categoryName = (categoryId: number) =>
+    categories.find((c) => c.id === categoryId)?.name ?? "Unknown";
+
+  const handleAddComment = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!id || !user || !newComment.trim()) return;
+
+    setSubmitting(true);
+    try {
+      const { data } = await api.post<Comment>(`/tickets/${id}/comments`, {
+        user_id: user.id,
+        message: newComment.trim(),
+      });
+      setComments((prev) => [...prev, data]);
+      setNewComment("");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Failed to add comment"));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return <div className="flex justify-center p-8">Loading ticket...</div>;
+  }
+
+  if (notFound || !ticket) {
+    return (
+      <div className="max-w-3xl mx-auto text-center py-12">
+        <p className="text-base-content/60 mb-4">Ticket not found.</p>
+        <Link to="/" className="link link-primary">
+          Back to tickets
+        </Link>
+      </div>
+    );
+  }
+
+  const canEdit =
+    !!user &&
+    (user.role === "admin" ||
+      user.role === "agent" ||
+      (user.id === ticket.created_by && !ticket.closed_at));
+
+  return (
+    <div className="max-w-3xl mx-auto space-y-6">
+      <div>
+        <Link to="/" className="link link-primary text-sm">
+          Back to tickets
+        </Link>
+      </div>
+
+      <div className="card bg-base-100 shadow-sm">
+        <div className="card-body">
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-xl font-semibold">{ticket.title}</h1>
+              <p className="text-sm text-base-content/60">
+                {ticket.ticket_number}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <span className="badge badge-outline">
+                {statusName(ticket.status_id)}
+              </span>
+              <span className="badge badge-outline">
+                {priorityName(ticket.priority_id)}
+              </span>
+              {canEdit && (
+                <Link
+                  to={`/tickets/${ticket.id}/edit`}
+                  className="btn btn-xs btn-outline"
+                >
+                  Edit
+                </Link>
+              )}
+            </div>
+          </div>
+
+          <div className="text-sm text-base-content/60">
+            {categoryName(ticket.category_id)} · Opened{" "}
+            {new Date(ticket.created_at).toLocaleDateString()}
+          </div>
+
+          <p className="mt-2 whitespace-pre-wrap">{ticket.description}</p>
+        </div>
+      </div>
+
+      <div className="card bg-base-100 shadow-sm">
+        <div className="card-body">
+          <h2 className="font-semibold mb-2">Attachments</h2>
+          {attachments.length === 0 ? (
+            <p className="text-sm text-base-content/60">No attachments.</p>
+          ) : (
+            <ul className="list-disc list-inside text-sm">
+              {attachments.map((a) => (
+                <li key={a.id}>{a.file_name}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+
+      <div className="card bg-base-100 shadow-sm">
+        <div className="card-body">
+          <h2 className="font-semibold mb-2">Comments</h2>
+
+          {comments.length === 0 ? (
+            <p className="text-sm text-base-content/60 mb-4">
+              No comments yet.
+            </p>
+          ) : (
+            <ul className="space-y-3 mb-4">
+              {comments.map((c) => (
+                <li key={c.id} className="bg-base-200 rounded-box p-3">
+                  <p className="text-sm">{c.message}</p>
+                  <p className="text-xs text-base-content/50 mt-1">
+                    {new Date(c.created_at).toLocaleString()}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <form onSubmit={handleAddComment} className="flex gap-2">
+            <input
+              className="input input-bordered flex-1"
+              placeholder="Add a comment..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              required
+            />
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={submitting}
+            >
+              {submitting ? "Posting..." : "Post"}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="client/src/pages/TicketForm.tsx">
+import { useEffect, useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import api, { getErrorMessage } from "../lib/api";
+import { useAuth } from "../context/auth-context";
+import type { Ticket, LookupItem } from "../types/tickets";
+
+interface FormState {
+  title: string;
+  description: string;
+  category_id: string;
+  priority_id: string;
+  status_id: string;
+}
+
+const EMPTY_FORM: FormState = {
+  title: "",
+  description: "",
+  category_id: "",
+  priority_id: "",
+  status_id: "",
+};
+
+export default function TicketForm() {
+  const { id } = useParams<{ id: string }>();
+  const isEdit = Boolean(id);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const isStaff = user?.role === "admin" || user?.role === "agent";
+
+  const [form, setForm] = useState<FormState>(EMPTY_FORM);
+  const [categories, setCategories] = useState<LookupItem[]>([]);
+  const [priorities, setPriorities] = useState<LookupItem[]>([]);
+  const [statuses, setStatuses] = useState<LookupItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      try {
+        const [categoriesRes, prioritiesRes, statusesRes] = await Promise.all([
+          api.get<LookupItem[]>("/categories"),
+          api.get<LookupItem[]>("/priorities"),
+          api.get<LookupItem[]>("/statuses"),
+        ]);
+        setCategories(categoriesRes.data);
+        setPriorities(prioritiesRes.data);
+        setStatuses(statusesRes.data);
+
+        if (isEdit && id) {
+          const { data } = await api.get<Ticket>(`/tickets/${id}`);
+          const isOwner = user?.id === data.created_by;
+
+          if (!isStaff && (!isOwner || data.closed_at)) {
+            toast.error("You don't have permission to edit this ticket");
+            navigate(`/tickets/${id}`);
+            return;
+          }
+
+          setForm({
+            title: data.title,
+            description: data.description,
+            category_id: String(data.category_id),
+            priority_id: String(data.priority_id),
+            status_id: String(data.status_id),
+          });
+        }
+      } catch (err) {
+        toast.error(getErrorMessage(err, "Failed to load form data"));
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, isEdit]);
+
+  const handleChange =
+    (field: keyof FormState) =>
+    (
+      e: ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => {
+      setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+
+    setSubmitting(true);
+    try {
+      if (isEdit && id) {
+        const payload: Partial<FormState> = {
+          title: form.title,
+          description: form.description,
+          category_id: form.category_id,
+          priority_id: form.priority_id,
+        };
+        if (isStaff) {
+          payload.status_id = form.status_id;
+        }
+
+        const { data } = await api.put<Ticket>(`/tickets/${id}`, {
+          category_id: Number(form.category_id),
+          priority_id: Number(form.priority_id),
+          ...(isStaff ? { status_id: Number(form.status_id) } : {}),
+        });
+        toast.success("Ticket updated");
+        navigate(`/tickets/${data.id}`);
+      } else {
+        const { data } = await api.post<Ticket>("/tickets", {
+          title: form.title,
+          description: form.description,
+          category_id: Number(form.category_id),
+          priority_id: Number(form.priority_id),
+        });
+        toast.success("Ticket created");
+        navigate(`/tickets/${data.id}`);
+      }
+    } catch (err) {
+      toast.error(
+        getErrorMessage(
+          err,
+          isEdit ? "Failed to update ticket" : "Failed to create ticket",
+        ),
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return <div className="flex justify-center p-8">Loading...</div>;
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <div className="mb-4">
+        <Link to="/" className="link link-primary text-sm">
+          Back to tickets
+        </Link>
+      </div>
+
+      <form onSubmit={handleSubmit} className="card bg-base-100 shadow-sm">
+        <div className="card-body gap-4">
+          <h1 className="text-xl font-semibold">
+            {isEdit ? "Edit ticket" : "New ticket"}
+          </h1>
+
+          <label className="form-control">
+            <span className="label-text">Title</span>
+            <input
+              className="input input-bordered w-full"
+              value={form.title}
+              onChange={handleChange("title")}
+              required
+            />
+          </label>
+
+          <label className="form-control">
+            <span className="label-text">Description</span>
+            <textarea
+              className="textarea textarea-bordered w-full"
+              rows={5}
+              value={form.description}
+              onChange={handleChange("description")}
+              required
+            />
+          </label>
+
+          <label className="form-control">
+            <span className="label-text">Category</span>
+            <select
+              className="select select-bordered w-full"
+              value={form.category_id}
+              onChange={handleChange("category_id")}
+              required
+            >
+              <option value="" disabled>
+                Select category
+              </option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="form-control">
+            <span className="label-text">Priority</span>
+            <select
+              className="select select-bordered w-full"
+              value={form.priority_id}
+              onChange={handleChange("priority_id")}
+              required
+            >
+              <option value="" disabled>
+                Select priority
+              </option>
+              {priorities.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {isEdit && isStaff && (
+            <label className="form-control">
+              <span className="label-text">Status</span>
+              <select
+                className="select select-bordered w-full"
+                value={form.status_id}
+                onChange={handleChange("status_id")}
+                required
+              >
+                {statuses.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={submitting}
+          >
+            {submitting
+              ? "Saving..."
+              : isEdit
+                ? "Save changes"
+                : "Create ticket"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+</file>
+
+<file path="client/src/types/useAuth.ts">
+export type Role = "admin" | "agent" | "customer";
+
+export interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  role: Role;
+}
+
+export interface RegisterPayload {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+}
+
+export interface AuthContextValue {
+  user: User | null;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  register: (data: RegisterPayload) => Promise<void>;
+  logout: () => void;
+}
+</file>
+
+<file path="client/src/index.css">
+@import "tailwindcss";
+@plugin "daisyui";
+</file>
+
+<file path="client/src/main.tsx">
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+</file>
+
+<file path="client/src/vite-env.d.ts">
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_API_URL: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+</file>
+
+<file path="client/eslint.config.js">
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import tseslint from 'typescript-eslint'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      globals: globals.browser,
+    },
+  },
+])
+</file>
+
+<file path="client/index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>client</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="client/README.md">
+# React + TypeScript + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+
+```
+</file>
+
+<file path="client/tsconfig.app.json">
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "es2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "esnext",
+    "types": ["vite/client"],
+    "allowArbitraryExtensions": true,
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="client/tsconfig.json">
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
+</file>
+
+<file path="client/tsconfig.node.json">
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "es2023",
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "module": "nodenext",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["vite.config.ts"]
+}
+</file>
+
+<file path="client/vite.config.ts">
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+});
+</file>
 
 <file path="server/src/config/railway.ts">
 import mysql from "mysql2/promise";
@@ -85,6 +1181,93 @@ export const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
 });
+</file>
+
+<file path="server/src/routes/AttachmentRoutes.ts">
+import { Router } from "express";
+import { authenticateJWT } from "../controller/Authentication/JWTController.ts";
+import { deleteAttachment } from "../controller/AttachmentsController.ts";
+
+const router = Router();
+
+router.use(authenticateJWT);
+router.delete("/:id", deleteAttachment);
+
+export default router;
+</file>
+
+<file path="server/src/routes/AuthRoutes.ts">
+import { Router } from "express";
+import { register } from "../controller/Authentication/RegisterController.ts";
+import { login } from "../controller/Authentication/LoginController.ts";
+
+const router = Router();
+
+router.post("/register", register);
+router.post("/login", login);
+
+export default router;
+</file>
+
+<file path="server/src/routes/CommentRoutes.ts">
+import { Router } from "express";
+import { authenticateJWT } from "../controller/Authentication/JWTController.ts";
+import { deleteComment } from "../controller/CommentsController.ts";
+
+const router = Router();
+
+router.use(authenticateJWT);
+router.delete("/:id", deleteComment);
+
+export default router;
+</file>
+
+<file path="server/src/routes/ReportRoutes.ts">
+import { Router } from "express";
+import { authenticateJWT, authorizeRoles } from "../controller/Authentication/JWTController.ts";
+import {
+  getTicketsByStatus,
+  getTicketsByPriority,
+  getAgentWorkload,
+  getAverageResolutionTime,
+} from "../controller/ReportsController.ts";
+
+const router = Router();
+
+router.use(authenticateJWT, authorizeRoles("admin", "agent"));
+
+router.get("/by-status", getTicketsByStatus);
+router.get("/by-priority", getTicketsByPriority);
+router.get("/agent-workload", getAgentWorkload);
+router.get("/resolution-time", getAverageResolutionTime);
+
+export default router;
+</file>
+
+<file path="server/src/routes/UserRoutes.ts">
+import { Router } from "express";
+import { authenticateJWT, authorizeRoles } from "../controller/Authentication/JWTController.ts";
+import { getAdmins, updateAdmin, deleteAdmin } from "../controller/Users/AdminsController.ts";
+import { getAgents, updateAgent, deleteAgent } from "../controller/Users/AgentsController.ts";
+import { getCustomers, updateCustomer, deleteCustomer } from "../controller/Users/CustomersController.ts";
+
+const router = Router();
+
+router.use(authenticateJWT, authorizeRoles("admin"));
+// Admin routes
+router.get("/admins", getAdmins);
+router.put("/admins/:id", updateAdmin);
+router.delete("/admins/:id", deleteAdmin);
+// Agent routes
+router.get("/agents", getAgents);
+router.put("/agents/:id", updateAgent);
+router.delete("/agents/:id", deleteAgent);
+// Customer route
+router.get("/customers", getCustomers);
+router.put("/customers/:id", updateCustomer);
+router.delete("/customers/:id", deleteCustomer);
+
+export default router;
 </file>
 
 <file path="server/tsconfig.json">
@@ -260,6 +1443,288 @@ DerivedData/
 *.db
 </file>
 
+<file path="client/src/pages/Tickets.tsx">
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import api, { getErrorMessage } from "../lib/api";
+import type { Ticket, LookupItem } from "../types/tickets";
+
+interface TicketsResponse {
+  data: Ticket[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+const PAGE_SIZE = 20;
+
+export default function Tickets() {
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [statuses, setStatuses] = useState<LookupItem[]>([]);
+  const [priorities, setPriorities] = useState<LookupItem[]>([]);
+  const [categories, setCategories] = useState<LookupItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      setLoadError(false);
+      try {
+        const [ticketsRes, statusesRes, prioritiesRes, categoriesRes] = await Promise.all([
+          api.get<TicketsResponse>("/tickets", { params: { page, limit: PAGE_SIZE } }),
+          api.get<LookupItem[]>("/statuses"),
+          api.get<LookupItem[]>("/priorities"),
+          api.get<LookupItem[]>("/categories"),
+        ]);
+
+        const body = ticketsRes.data;
+        if (!body?.pagination) {
+          throw new Error("Unexpected response shape from /tickets — expected { data, pagination }");
+        }
+
+        setTickets(body.data);
+        const serverTotalPages = body.pagination.totalPages;
+        setTotalPages(serverTotalPages);
+
+        if (serverTotalPages > 0 && page > serverTotalPages) {
+          setPage(serverTotalPages);
+          return;
+        }
+
+        setStatuses(statusesRes.data);
+        setPriorities(prioritiesRes.data);
+        setCategories(categoriesRes.data);
+      } catch (err) {
+        setLoadError(true);
+        toast.error(getErrorMessage(err, "Failed to load tickets"));
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, [page]);
+
+  const statusName = (id: number) =>
+    statuses.find((s) => s.id === id)?.name ?? "Unknown";
+  const priorityName = (id: number) =>
+    priorities.find((p) => p.id === id)?.name ?? "Unknown";
+  const categoryName = (id: number) =>
+    categories.find((c) => c.id === id)?.name ?? "Unknown";
+
+  if (loading) {
+    return <div className="flex justify-center p-8">Loading tickets...</div>;
+  }
+
+  if (loadError) {
+    return (
+      <div className="max-w-5xl mx-auto text-center py-12">
+        <p className="text-error mb-2">Couldn't load tickets.</p>
+        <p className="text-base-content/60 text-sm">
+          Check your connection and refresh the page to try again.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-5xl mx-auto">
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold">Tickets</h1>
+        <Link to="/tickets/new" className="btn btn-primary btn-sm">
+          New ticket
+        </Link>
+      </div>
+
+      {tickets.length === 0 ? (
+        <div className="text-center text-base-content/60 py-12">
+          No tickets yet.
+        </div>
+      ) : (
+        <>
+          <div className="overflow-x-auto bg-base-100 rounded-box shadow-sm">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Ticket #</th>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Priority</th>
+                  <th>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tickets.map((ticket) => (
+                  <tr key={ticket.id} className="hover">
+                    <td>
+                      <Link
+                        to={`/tickets/${ticket.id}`}
+                        className="link link-primary"
+                      >
+                        {ticket.ticket_number}
+                      </Link>
+                    </td>
+                    <td>{ticket.title}</td>
+                    <td>{categoryName(ticket.category_id)}</td>
+                    <td>
+                      <span className="badge badge-outline">
+                        {statusName(ticket.status_id)}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="badge badge-outline">
+                        {priorityName(ticket.priority_id)}
+                      </span>
+                    </td>
+                    <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-4">
+              <button
+                className="btn btn-sm"
+                disabled={page === 1}
+                onClick={() => setPage((p) => p - 1)}
+              >
+                Previous
+              </button>
+              <span className="text-sm text-base-content/60">
+                Page {page} of {totalPages}
+              </span>
+              <button
+                className="btn btn-sm"
+                disabled={page === totalPages}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+</file>
+
+<file path="client/src/types/tickets.ts">
+export interface Ticket {
+  id: number;
+  ticket_number: string;
+  title: string;
+  description: string;
+  category_id: number;
+  priority_id: number;
+  status_id: number;
+  created_by: number;
+  assigned_to: number | null;
+  created_at: string;
+  closed_at: string | null;
+}
+
+export interface LookupItem {
+  id: number;
+  name: string;
+}
+
+export interface Comment {
+  id: number;
+  ticket_id: number;
+  user_id: number;
+  message: string;
+  created_at: string;
+}
+
+export interface Attachment {
+  id: number;
+  ticket_id: number;
+  file_name: string;
+  file_path: string;
+  file_size: number;
+  uploaded_by: number;
+  uploaded_at: string;
+}
+</file>
+
+<file path="client/.gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.env
+.env.local
+</file>
+
+<file path="client/package.json">
+{
+  "name": "client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "axios": "^1.19.0",
+    "daisyui": "^5.7.9",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-hot-toast": "^2.6.0",
+    "react-router-dom": "^7.18.2",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "eslint": "^10.8.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.65.0",
+    "vite": "^8.2.0"
+  }
+}
+</file>
+
 <file path="server/src/controller/Authentication/JWTController.ts">
 import jwt from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
@@ -391,7 +1856,7 @@ const SALT_ROUNDS = 10;
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { first_name, last_name, email, password, role } = req.body;
+    const { first_name, last_name, email, password } = req.body;
 
     if (!first_name || !last_name || !email || !password) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -406,7 +1871,9 @@ export const register = async (req: Request, res: Response) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    const finalRole = role ?? "customer";
+    // Public registration always creates a customer. Admin/agent accounts
+    // are created by an existing admin through the user management routes.
+    const finalRole = "customer";
 
     const [result] = await pool.query(
       `INSERT INTO users (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, ?)`,
@@ -431,38 +1898,6 @@ export const register = async (req: Request, res: Response) => {
 };
 </file>
 
-<file path="server/src/controller/Tickets/AssignController.ts">
-import type { Request, Response } from "express";
-import { pool } from "../../config/railway.ts";
-
-export const assignTicket = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { assigned_to } = req.body;
-
-    if (!assigned_to) {
-      return res.status(400).json({ error: "assigned_to is required" });
-    }
-
-    const [result] = await pool.query(
-      `UPDATE tickets SET assigned_to = ? WHERE id = ?`,
-      [assigned_to, id],
-    );
-
-    const affectedRows = (result as { affectedRows: number }).affectedRows;
-
-    if (affectedRows === 0) {
-      return res.status(404).json({ error: "Ticket not found" });
-    }
-
-    res.status(200).json({ id, assigned_to });
-  } catch (error) {
-    console.error("Error assigning ticket:", error);
-    res.status(500).json({ error: "Failed to assign ticket" });
-  }
-};
-</file>
-
 <file path="server/src/controller/Tickets/CreateController.ts">
 import type { Request, Response } from "express";
 import { pool } from "../../config/railway.ts";
@@ -482,14 +1917,14 @@ export const createTicket = async (req: Request, res: Response) => {
       description,
       category_id,
       priority_id,
-      created_by,
       assigned_to,
     } = req.body;
 
-    if (!title || !description || !category_id || !priority_id || !created_by) {
+    if (!title || !description || !category_id || !priority_id) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
+    const created_by = req.user!.id;
     const ticket_number = generateTicketNumber();
 
     const [result] = await pool.query(
@@ -552,83 +1987,59 @@ export const deleteTicket = async (req: Request, res: Response) => {
 };
 </file>
 
-<file path="server/src/controller/Tickets/UpdateController.ts">
-import type { Request, Response } from "express";
-import { pool } from "../../config/railway.ts";
-
-const ALLOWED_FIELDS = [
-  "title",
-  "description",
-  "category_id",
-  "priority_id",
-  "status_id",
-] as const;
-
-export const updateTicket = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const updates: Record<string, unknown> = {};
-
-    for (const field of ALLOWED_FIELDS) {
-      if (req.body[field] !== undefined) {
-        updates[field] = req.body[field];
-      }
-    }
-
-    if (Object.keys(updates).length === 0) {
-      return res.status(400).json({ error: "No valid fields to update" });
-    }
-
-    const setClause = Object.keys(updates)
-      .map((field) => `${field} = ?`)
-      .join(", ");
-    const values = [...Object.values(updates), id];
-
-    const [result] = await pool.query(
-      `UPDATE tickets SET ${setClause} WHERE id = ?`,
-      values,
-    );
-
-    const affectedRows = (result as { affectedRows: number }).affectedRows;
-
-    if (affectedRows === 0) {
-      return res.status(404).json({ error: "Ticket not found" });
-    }
-
-    res.status(200).json({ id, ...updates });
-  } catch (error) {
-    console.error("Error updating ticket:", error);
-    res.status(500).json({ error: "Failed to update ticket" });
-  }
-};
-</file>
-
 <file path="server/src/controller/Tickets/ViewController.ts">
 import type { Request, Response } from "express";
+import type { RowDataPacket } from "mysql2"; // Or your specific DB driver types
 import { pool } from "../../config/railway.ts";
 
-// GET /tickets - list all tickets
+const DEFAULT_PAGE_SIZE = 20;
+const MAX_PAGE_SIZE = 100;
+
+// GET /tickets - list all tickets (paginated, excludes soft-deleted)
 export const getTickets = async (req: Request, res: Response) => {
   try {
+    const page = Math.max(1, Number(req.query.page) || 1);
+    const limit = Math.min(MAX_PAGE_SIZE, Math.max(1, Number(req.query.limit) || DEFAULT_PAGE_SIZE));
+    const offset = (page - 1) * limit;
+
     const [rows] = await pool.query(
-      `SELECT * FROM tickets ORDER BY created_at DESC`,
+      `SELECT * FROM tickets WHERE deleted_at IS NULL ORDER BY created_at DESC LIMIT ? OFFSET ?`,
+      [limit, offset],
     );
-    res.status(200).json(rows);
+
+    const [countRows] = await pool.query(
+      `SELECT COUNT(*) AS total FROM tickets WHERE deleted_at IS NULL`,
+    );
+    
+    // Safely cast and check if countRows exists before accessing index 0
+    const counts = countRows as RowDataPacket[];
+    const total = counts?.[0]?.total ?? 0;
+
+    res.status(200).json({
+      data: rows,
+      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    });
   } catch (error) {
     console.error("Error fetching tickets:", error);
     res.status(500).json({ error: "Failed to fetch tickets" });
   }
 };
 
-// GET /tickets/:id - single ticket
+// GET /tickets/:id - single ticket (excludes soft-deleted)
 export const getTicketById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const [rows] = await pool.query(`SELECT * FROM tickets WHERE id = ?`, [id]);
-    const tickets = rows as unknown[];
+    const [rows] = await pool.query(
+      `SELECT * FROM tickets WHERE id = ? AND deleted_at IS NULL`,
+      [id],
+    );
+    
+    // Cast to an array of objects
+    const tickets = rows as RowDataPacket[];
 
-    if (tickets.length === 0) {
+    // Check if tickets array exists and has elements
+    if (!tickets || tickets.length === 0) {
       return res.status(404).json({ error: "Ticket not found" });
     }
 
@@ -636,186 +2047,6 @@ export const getTicketById = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error fetching ticket:", error);
     res.status(500).json({ error: "Failed to fetch ticket" });
-  }
-};
-</file>
-
-<file path="server/src/controller/Users/AdminsController.ts">
-import type { Request, Response } from "express";
-import { pool } from "../../config/railway.ts";
-
-export const getAdmins = async (req: Request, res: Response) => {
-  try {
-    const [rows] = await pool.query(
-      `SELECT id, first_name, last_name, email, created_at FROM users WHERE role = 'admin'`,
-    );
-    res.status(200).json(rows);
-  } catch (error) {
-    console.error("Error fetching admins:", error);
-    res.status(500).json({ error: "Failed to fetch admins" });
-  }
-};
-
-export const updateAdmin = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { first_name, last_name, email } = req.body;
-
-    const [result] = await pool.query(
-      `UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ? AND role = 'admin'`,
-      [first_name, last_name, email, id],
-    );
-
-    const affectedRows = (result as { affectedRows: number }).affectedRows;
-
-    if (affectedRows === 0) {
-      return res.status(404).json({ error: "Admin not found" });
-    }
-
-    res.status(200).json({ id, first_name, last_name, email });
-  } catch (error) {
-    console.error("Error updating admin:", error);
-    res.status(500).json({ error: "Failed to update admin" });
-  }
-};
-
-export const deleteAdmin = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const [result] = await pool.query(
-      `DELETE FROM users WHERE id = ? AND role = 'admin'`,
-      [id],
-    );
-    const affectedRows = (result as { affectedRows: number }).affectedRows;
-
-    if (affectedRows === 0) {
-      return res.status(404).json({ error: "Admin not found" });
-    }
-
-    res.status(204).send();
-  } catch (error) {
-    console.error("Error deleting admin:", error);
-    res.status(500).json({ error: "Failed to delete admin" });
-  }
-};
-</file>
-
-<file path="server/src/controller/Users/AgentsController.ts">
-import type { Request, Response } from "express";
-import { pool } from "../../config/railway.ts";
-
-export const getAgents = async (req: Request, res: Response) => {
-  try {
-    const [rows] = await pool.query(
-      `SELECT id, first_name, last_name, email, created_at FROM users WHERE role = 'agent'`,
-    );
-    res.status(200).json(rows);
-  } catch (error) {
-    console.error("Error fetching agents:", error);
-    res.status(500).json({ error: "Failed to fetch agents" });
-  }
-};
-
-export const updateAgent = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { first_name, last_name, email } = req.body;
-
-    const [result] = await pool.query(
-      `UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ? AND role = 'agent'`,
-      [first_name, last_name, email, id],
-    );
-
-    const affectedRows = (result as { affectedRows: number }).affectedRows;
-
-    if (affectedRows === 0) {
-      return res.status(404).json({ error: "Agent not found" });
-    }
-
-    res.status(200).json({ id, first_name, last_name, email });
-  } catch (error) {
-    console.error("Error updating agent:", error);
-    res.status(500).json({ error: "Failed to update agent" });
-  }
-};
-
-export const deleteAgent = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const [result] = await pool.query(
-      `DELETE FROM users WHERE id = ? AND role = 'agent'`,
-      [id],
-    );
-    const affectedRows = (result as { affectedRows: number }).affectedRows;
-
-    if (affectedRows === 0) {
-      return res.status(404).json({ error: "Agent not found" });
-    }
-
-    res.status(204).send();
-  } catch (error) {
-    console.error("Error deleting agent:", error);
-    res.status(500).json({ error: "Failed to delete agent" });
-  }
-};
-</file>
-
-<file path="server/src/controller/Users/CustomersController.ts">
-import type { Request, Response } from "express";
-import { pool } from "../../config/railway.ts";
-
-export const getCustomers = async (req: Request, res: Response) => {
-  try {
-    const [rows] = await pool.query(
-      `SELECT id, first_name, last_name, email, created_at FROM users WHERE role = 'customer'`,
-    );
-    res.status(200).json(rows);
-  } catch (error) {
-    console.error("Error fetching customers:", error);
-    res.status(500).json({ error: "Failed to fetch customers" });
-  }
-};
-
-export const updateCustomer = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { first_name, last_name, email } = req.body;
-
-    const [result] = await pool.query(
-      `UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ? AND role = 'customer'`,
-      [first_name, last_name, email, id],
-    );
-
-    const affectedRows = (result as { affectedRows: number }).affectedRows;
-
-    if (affectedRows === 0) {
-      return res.status(404).json({ error: "Customer not found" });
-    }
-
-    res.status(200).json({ id, first_name, last_name, email });
-  } catch (error) {
-    console.error("Error updating customer:", error);
-    res.status(500).json({ error: "Failed to update customer" });
-  }
-};
-
-export const deleteCustomer = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const [result] = await pool.query(
-      `DELETE FROM users WHERE id = ? AND role = 'customer'`,
-      [id],
-    );
-    const affectedRows = (result as { affectedRows: number }).affectedRows;
-
-    if (affectedRows === 0) {
-      return res.status(404).json({ error: "Customer not found" });
-    }
-
-    res.status(204).send();
-  } catch (error) {
-    console.error("Error deleting customer:", error);
-    res.status(500).json({ error: "Failed to delete customer" });
   }
 };
 </file>
@@ -967,73 +2198,6 @@ export const deleteCategory = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error deleting category:", error);
     res.status(500).json({ error: "Failed to delete category" });
-  }
-};
-</file>
-
-<file path="server/src/controller/CommentsController.ts">
-import type { Request, Response } from "express";
-import { pool } from "../config/railway.ts";
-
-export const getCommentsByTicket = async (req: Request, res: Response) => {
-  try {
-    const { ticketId } = req.params;
-
-    const [rows] = await pool.query(
-      `SELECT * FROM comments WHERE ticket_id = ? ORDER BY created_at ASC`,
-      [ticketId],
-    );
-
-    res.status(200).json(rows);
-  } catch (error) {
-    console.error("Error fetching comments:", error);
-    res.status(500).json({ error: "Failed to fetch comments" });
-  }
-};
-
-export const createComment = async (req: Request, res: Response) => {
-  try {
-    const { ticketId } = req.params;
-    const { user_id, message } = req.body;
-
-    if (!user_id || !message) {
-      return res
-        .status(400)
-        .json({ error: "user_id and message are required" });
-    }
-
-    const [result] = await pool.query(
-      `INSERT INTO comments (ticket_id, user_id, message) VALUES (?, ?, ?)`,
-      [ticketId, user_id, message],
-    );
-
-    const insertId = (result as { insertId: number }).insertId;
-
-    res
-      .status(201)
-      .json({ id: insertId, ticket_id: ticketId, user_id, message });
-  } catch (error) {
-    console.error("Error creating comment:", error);
-    res.status(500).json({ error: "Failed to create comment" });
-  }
-};
-
-export const deleteComment = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const [result] = await pool.query(`DELETE FROM comments WHERE id = ?`, [
-      id,
-    ]);
-    const affectedRows = (result as { affectedRows: number }).affectedRows;
-
-    if (affectedRows === 0) {
-      return res.status(404).json({ error: "Comment not found" });
-    }
-
-    res.status(204).send();
-  } catch (error) {
-    console.error("Error deleting comment:", error);
-    res.status(500).json({ error: "Failed to delete comment" });
   }
 };
 </file>
@@ -1267,6 +2431,608 @@ export const deleteStatus = async (req: Request, res: Response) => {
 };
 </file>
 
+<file path="server/src/routes/CategoryRoutes.ts">
+import { Router } from "express";
+import { authenticateJWT, authorizeRoles } from "../controller/Authentication/JWTController.ts";
+import { getCategories, createCategory, updateCategory, deleteCategory } from "../controller/CategoriesController.ts";
+
+const router = Router();
+
+router.use(authenticateJWT);
+
+router.get("/", getCategories);
+router.post("/", authorizeRoles("admin"), createCategory);
+router.put("/:id", authorizeRoles("admin"), updateCategory);
+router.delete("/:id", authorizeRoles("admin"), deleteCategory);
+
+export default router;
+</file>
+
+<file path="server/src/routes/PriorityRoutes.ts">
+import { Router } from "express";
+import { authenticateJWT, authorizeRoles } from "../controller/Authentication/JWTController.ts";
+import { getPriorities, createPriority, updatePriority, deletePriority } from "../controller/PrioritiesController.ts";
+
+const router = Router();
+
+router.use(authenticateJWT);
+
+router.get("/", getPriorities);
+router.post("/", authorizeRoles("admin"), createPriority);
+router.put("/:id", authorizeRoles("admin"), updatePriority);
+router.delete("/:id", authorizeRoles("admin"), deletePriority);
+
+export default router;
+</file>
+
+<file path="server/src/routes/StatusRoutes.ts">
+import { Router } from "express";
+import { authenticateJWT, authorizeRoles } from "../controller/Authentication/JWTController.ts";
+import { getStatuses, createStatus, updateStatus, deleteStatus } from "../controller/StatusesController.ts";
+
+const router = Router();
+
+router.use(authenticateJWT);
+
+router.get("/", getStatuses);
+router.post("/", authorizeRoles("admin"), createStatus);
+router.put("/:id", authorizeRoles("admin"), updateStatus);
+router.delete("/:id", authorizeRoles("admin"), deleteStatus);
+
+export default router;
+</file>
+
+<file path="client/src/context/auth-context.tsx">
+import { createContext, useContext } from "react";
+import {  type AuthContextValue } from '../types/useAuth'
+
+export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
+export function useAuth() {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  return ctx;
+}
+</file>
+
+<file path="client/src/context/AuthContext.tsx">
+import { useState } from "react";
+import type { ReactNode } from "react";
+import api from "../lib/api";
+import { AuthContext } from "./auth-context";
+import type { User, RegisterPayload } from "../types/useAuth";
+
+function readStoredUser(): User | null {
+  const storedUser = localStorage.getItem("user");
+  if (!storedUser) return null;
+  try {
+    return JSON.parse(storedUser) as User;
+  } catch {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    return null;
+  }
+}
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  // 1. Read from localStorage synchronously during initialization
+  const [user, setUser] = useState<User | null>(readStoredUser);
+
+  // 2. Keep a static value for the context interface without using state
+  const loading = false;
+
+  const persistSession = (data: User & { token: string }) => {
+    const { token, ...userData } = data;
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(userData));
+    setUser(userData);
+  };
+
+  const login = async (email: string, password: string) => {
+    const { data } = await api.post("/auth/login", { email, password });
+    persistSession(data);
+  };
+
+  const register = async (payload: RegisterPayload) => {
+    const { data } = await api.post("/auth/register", payload);
+    persistSession(data);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+</file>
+
+<file path="server/src/controller/Tickets/AssignController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+interface AgentRow {
+  id: number;
+  role: string;
+}
+
+interface TicketRow {
+  id: number;
+  assigned_to: number | null;
+}
+
+export const assignTicket = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { assigned_to } = req.body;
+    const userId = req.user!.id;
+
+    if (!assigned_to) {
+      return res.status(400).json({ error: "assigned_to is required" });
+    }
+
+    // 1. Validate assigned user is a valid agent
+    const [agentRows] = await pool.query(
+      `SELECT id, role FROM users WHERE id = ?`,
+      [assigned_to],
+    );
+    const agent = (agentRows as AgentRow[])[0];
+    if (!agent || agent.role !== "agent") {
+      return res
+        .status(400)
+        .json({ error: "assigned_to must be a valid agent" });
+    }
+
+    // 2. Fetch current ticket assignment state
+    const [ticketRows] = await pool.query(
+      `SELECT id, assigned_to FROM tickets WHERE id = ?`,
+      [id],
+    );
+    const ticket = (ticketRows as TicketRow[])[0];
+    if (!ticket) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    // 3. Update assignment
+    const [result] = await pool.query(
+      `UPDATE tickets SET assigned_to = ? WHERE id = ?`,
+      [assigned_to, id],
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    // 4. Log history if assignment changed
+    if (ticket.assigned_to !== assigned_to) {
+      await pool.query(
+        `INSERT INTO ticket_history (ticket_id, user_id, action, old_value, new_value) VALUES (?, ?, 'assigned_to', ?, ?)`,
+        [
+          id,
+          userId,
+          ticket.assigned_to === null ? null : String(ticket.assigned_to),
+          String(assigned_to),
+        ],
+      );
+    }
+
+    res.status(200).json({ id, assigned_to });
+  } catch (error) {
+    console.error("Error assigning ticket:", error);
+    res.status(500).json({ error: "Failed to assign ticket" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Tickets/UpdateController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+const STAFF_ALLOWED_FIELDS = [
+  "title",
+  "description",
+  "category_id",
+  "priority_id",
+  "status_id",
+] as const;
+
+const CUSTOMER_ALLOWED_FIELDS = [
+  "title",
+  "description",
+  "category_id",
+  "priority_id",
+] as const;
+
+interface TicketRow {
+  id: number;
+  title: string;
+  description: string;
+  category_id: number;
+  priority_id: number;
+  status_id: number;
+  created_by: number;
+  closed_at: string | null;
+}
+
+export const updateTicket = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { role, id: userId } = req.user!;
+
+    // 1. Fetch current ticket to compare changes and verify permissions
+    const [rows] = await pool.query(
+      `SELECT id, title, description, category_id, priority_id, status_id, created_by, closed_at 
+       FROM tickets WHERE id = ?`,
+      [id],
+    );
+
+    const ticket = (rows as TicketRow[])[0];
+    if (!ticket) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    const isStaff = role === "admin" || role === "agent";
+    const isOwner = ticket.created_by === userId;
+
+    if (!isStaff && !isOwner) {
+      return res.status(403).json({ error: "Insufficient permissions" });
+    }
+
+    if (!isStaff && ticket.closed_at) {
+      return res.status(403).json({ error: "Cannot edit a closed ticket" });
+    }
+
+    // 2. Filter allowed fields
+    const allowedFields = isStaff
+      ? STAFF_ALLOWED_FIELDS
+      : CUSTOMER_ALLOWED_FIELDS;
+    const updates: Record<string, unknown> = {};
+
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) {
+        updates[field] = req.body[field];
+      }
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ error: "No valid fields to update" });
+    }
+
+    // 3. Build history entries by comparing old vs new values
+    const historyEntries = Object.entries(updates)
+      .filter(
+        ([field, newValue]) =>
+          String(ticket[field as keyof TicketRow] ?? "") !==
+          String(newValue ?? ""),
+      )
+      .map(([field, newValue]) => [
+        id,
+        userId,
+        field, // maps to 'action' column
+        ticket[field as keyof TicketRow] === null
+          ? null
+          : String(ticket[field as keyof TicketRow]),
+        newValue === null ? null : String(newValue),
+      ]);
+
+    // 4. Perform update query
+    const setClause = Object.keys(updates)
+      .map((field) => `${field} = ?`)
+      .join(", ");
+    const values = [...Object.values(updates), id];
+
+    const [result] = await pool.query(
+      `UPDATE tickets SET ${setClause} WHERE id = ?`,
+      values,
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    // 5. Record audit logs in ticket_history
+    if (historyEntries.length > 0) {
+      await pool.query(
+        `INSERT INTO ticket_history (ticket_id, user_id, action, old_value, new_value) VALUES ?`,
+        [historyEntries],
+      );
+    }
+
+    res.status(200).json({ id, ...updates });
+  } catch (error) {
+    console.error("Error updating ticket:", error);
+    res.status(500).json({ error: "Failed to update ticket" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Users/AdminsController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+export const getAdmins = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT id, first_name, last_name, email FROM users WHERE role = 'admin'`,
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching admins:", error);
+    res.status(500).json({ error: "Failed to fetch admins" });
+  }
+};
+
+export const updateAdmin = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { first_name, last_name, email } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ? AND role = 'admin'`,
+      [first_name, last_name, email, id],
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Admin not found" });
+    }
+
+    res.status(200).json({ id, first_name, last_name, email });
+  } catch (error) {
+    console.error("Error updating admin:", error);
+    res.status(500).json({ error: "Failed to update admin" });
+  }
+};
+
+export const deleteAdmin = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(
+      `DELETE FROM users WHERE id = ? AND role = 'admin'`,
+      [id],
+    );
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Admin not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting admin:", error);
+    res.status(500).json({ error: "Failed to delete admin" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Users/AgentsController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+export const getAgents = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT id, first_name, last_name, email, create_at FROM users WHERE role = 'agent'`,
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching agents:", error);
+    res.status(500).json({ error: "Failed to fetch agents" });
+  }
+};
+
+export const updateAgent = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { first_name, last_name, email } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ? AND role = 'agent'`,
+      [first_name, last_name, email, id],
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Agent not found" });
+    }
+
+    res.status(200).json({ id, first_name, last_name, email });
+  } catch (error) {
+    console.error("Error updating agent:", error);
+    res.status(500).json({ error: "Failed to update agent" });
+  }
+};
+
+export const deleteAgent = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(
+      `DELETE FROM users WHERE id = ? AND role = 'agent'`,
+      [id],
+    );
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Agent not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting agent:", error);
+    res.status(500).json({ error: "Failed to delete agent" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Users/CustomersController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+export const getCustomers = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT id, first_name, last_name, email FROM users WHERE role = 'customer'`,
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching customers:", error);
+    res.status(500).json({ error: "Failed to fetch customers" });
+  }
+};
+
+export const updateCustomer = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { first_name, last_name, email } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ? AND role = 'customer'`,
+      [first_name, last_name, email, id],
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Customer not found" });
+    }
+
+    res.status(200).json({ id, first_name, last_name, email });
+  } catch (error) {
+    console.error("Error updating customer:", error);
+    res.status(500).json({ error: "Failed to update customer" });
+  }
+};
+
+export const deleteCustomer = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(
+      `DELETE FROM users WHERE id = ? AND role = 'customer'`,
+      [id],
+    );
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Customer not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting customer:", error);
+    res.status(500).json({ error: "Failed to delete customer" });
+  }
+};
+</file>
+
+<file path="server/src/controller/CommentsController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../config/railway.ts";
+
+export const getCommentsByTicket = async (req: Request, res: Response) => {
+  try {
+    const { ticketId } = req.params;
+
+    const [rows] = await pool.query(
+      `SELECT * FROM comments WHERE ticket_id = ? ORDER BY created_at ASC`,
+      [ticketId],
+    );
+
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ error: "Failed to fetch comments" });
+  }
+};
+
+export const createComment = async (req: Request, res: Response) => {
+  try {
+    const { ticketId } = req.params;
+    const { user_id, message } = req.body;
+
+    if (!user_id || !message) {
+      return res
+        .status(400)
+        .json({ error: "user_id and message are required" });
+    }
+
+    const [result] = await pool.query(
+      `INSERT INTO comments (ticket_id, user_id, message) VALUES (?, ?, ?)`,
+      [ticketId, user_id, message],
+    );
+
+    const insertId = (result as { insertId: number }).insertId;
+
+    res
+      .status(201)
+      .json({ id: insertId, ticket_id: ticketId, user_id, message, created_at: new Date().toISOString() });
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    res.status(500).json({ error: "Failed to create comment" });
+  }
+};
+
+export const deleteComment = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(`DELETE FROM comments WHERE id = ?`, [
+      id,
+    ]);
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({ error: "Failed to delete comment" });
+  }
+};
+</file>
+
+<file path="server/src/routes/TicketRoutes.ts">
+import { Router } from "express";
+import { authenticateJWT, authorizeRoles  } from "../controller/Authentication/JWTController.ts";
+import { createTicket } from "../controller/Tickets/CreateController.ts";
+import { getTickets, getTicketById } from "../controller/Tickets/ViewController.ts";
+import { updateTicket } from "../controller/Tickets/UpdateController.ts";
+import { deleteTicket } from "../controller/Tickets/DeleteController.ts";
+import { assignTicket } from "../controller/Tickets/AssignController.ts";
+import { getCommentsByTicket, createComment } from "../controller/CommentsController.ts";
+import { getAttachmentsByTicket, createAttachment } from "../controller/AttachmentsController.ts";
+import { getTicketHistory } from "../controller/Tickets/TicketHistoryController.ts";
+
+const router = Router();
+
+router.use(authenticateJWT);
+
+router.get("/", getTickets);
+router.get("/:id", getTicketById);  
+router.get("/:ticketId/history", authenticateJWT, getTicketHistory);
+router.post("/", createTicket);
+router.put("/:id", updateTicket);
+router.delete("/:id", deleteTicket);
+router.put("/:id/assign", authorizeRoles("admin", "agent"), assignTicket);
+
+router.get("/:ticketId/comments", getCommentsByTicket);
+router.post("/:ticketId/comments", createComment);
+
+router.get("/:ticketId/attachments", getAttachmentsByTicket);
+router.post("/:ticketId/attachments", createAttachment);
+
+export default router;
+</file>
+
 <file path="server/src/envConfig.ts">
 import dotenv from "dotenv";
 import type { SignOptions } from "jsonwebtoken";
@@ -1304,40 +3070,6 @@ console.log(`Database connected to host: ${config.db.host}`);
 console.log(`-----------------------------------`);
 </file>
 
-<file path="server/src/server.ts">
-import express, { type Request, type Response } from "express";
-import { config } from "./envConfig.ts";
-import { pool } from "./config/railway.ts";
-import cors from 'cors';
-
-const app = express();
-
-// Middlewares
-app.use(express.json());
-app.use(cors());
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Server's running");
-});
-
-const startServer = async () => {
-  try {
-    const connection = await pool.getConnection();
-    console.log("Successfully connected to Railway MySQL database!");
-    connection.release(); // Release the connection back to the pool
-    app.listen(config.port, () => {
-      console.log(`Server is running on http://localhost:${config.port}`);
-      console.log(`-----------------------------------`);
-    });
-  } catch (error) {
-    console.error(" Failed to connect to the database:", error);
-    process.exit(1); // Exit process with failure code
-  }
-};
-
-startServer();
-</file>
-
 <file path="server/package.json">
 {
   "dependencies": {
@@ -1371,6 +3103,128 @@ startServer();
   "license": "ISC",
   "type": "module"
 }
+</file>
+
+<file path="client/src/App.tsx">
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./components/Layout";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Tickets from "./pages/Tickets";
+import TicketDetail from "./pages/TicketDetail";
+import TicketForm from "./pages/TicketForm";
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Toaster position="top-right" />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Tickets />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tickets/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <TicketDetail />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tickets/new"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <TicketForm />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tickets/:id/edit"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <TicketForm />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+};
+
+export default App;
+</file>
+
+<file path="server/src/server.ts">
+import express, { type Request, type Response } from "express";
+import { config } from "./envConfig.ts";
+import { pool } from "./config/railway.ts";
+import cors from 'cors';
+import authRoutes from "./routes/AuthRoutes.ts";
+import ticketRoutes from "./routes/TicketRoutes.ts";
+import commentRoutes from "./routes/CommentRoutes.ts";
+import attachmentRoutes from "./routes/AttachmentRoutes.ts";
+import categoryRoutes from "./routes/CategoryRoutes.ts";
+import priorityRoutes from "./routes/PriorityRoutes.ts";
+import statusRoutes from "./routes/StatusRoutes.ts";
+import userRoutes from "./routes/UserRoutes.ts";
+import reportRoutes from "./routes/ReportRoutes.ts";
+
+const app = express();
+
+// Middlewares
+app.use(express.json());
+app.use(cors());
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Server's running");
+});
+
+app.use("/auth", authRoutes);
+app.use("/tickets", ticketRoutes);
+app.use("/comments", commentRoutes);
+app.use("/attachments", attachmentRoutes);
+app.use("/categories", categoryRoutes);
+app.use("/priorities", priorityRoutes);
+app.use("/statuses", statusRoutes);
+app.use("/users", userRoutes);
+app.use("/reports", reportRoutes);
+
+const startServer = async () => {
+  try {
+    const connection = await pool.getConnection();
+    console.log("Successfully connected to Railway MySQL database!");
+    connection.release(); // Release the connection back to the pool
+    app.listen(config.port, () => {
+      console.log(`Server is running on http://localhost:${config.port}`);
+      console.log(`-----------------------------------`);
+    });
+  } catch (error) {
+    console.error(" Failed to connect to the database:", error);
+    process.exit(1); // Exit process with failure code
+  }
+};
+
+startServer();
 </file>
 
 </files>

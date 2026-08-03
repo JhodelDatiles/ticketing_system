@@ -7,7 +7,7 @@ const SALT_ROUNDS = 10;
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { first_name, last_name, email, password, role } = req.body;
+    const { first_name, last_name, email, password } = req.body;
 
     if (!first_name || !last_name || !email || !password) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -22,7 +22,9 @@ export const register = async (req: Request, res: Response) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    const finalRole = role ?? "customer";
+    // Public registration always creates a customer. Admin/agent accounts
+    // are created by an existing admin through the user management routes.
+    const finalRole = "customer";
 
     const [result] = await pool.query(
       `INSERT INTO users (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, ?)`,
