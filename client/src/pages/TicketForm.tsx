@@ -4,7 +4,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import api, { getErrorMessage } from "../lib/api";
 import { useAuth } from "../context/auth-context";
-import type { Ticket, LookupItem } from "../types/tickets";
+import type { Ticket, LookupItem, PaginatedResponse } from "../types/tickets";
 
 interface FormState {
   title: string;
@@ -41,13 +41,19 @@ export default function TicketForm() {
       setLoading(true);
       try {
         const [categoriesRes, prioritiesRes, statusesRes] = await Promise.all([
-          api.get<LookupItem[]>("/categories"),
-          api.get<LookupItem[]>("/priorities"),
-          api.get<LookupItem[]>("/statuses"),
+          api.get<PaginatedResponse<LookupItem>>("/categories", {
+            params: { limit: 200 },
+          }),
+          api.get<PaginatedResponse<LookupItem>>("/priorities", {
+            params: { limit: 200 },
+          }),
+          api.get<PaginatedResponse<LookupItem>>("/statuses", {
+            params: { limit: 200 },
+          }),
         ]);
-        setCategories(categoriesRes.data);
-        setPriorities(prioritiesRes.data);
-        setStatuses(statusesRes.data);
+        setCategories(categoriesRes.data.data);
+        setPriorities(prioritiesRes.data.data);
+        setStatuses(statusesRes.data.data);
 
         if (isEdit && id) {
           const { data } = await api.get<Ticket>(`/tickets/${id}`);

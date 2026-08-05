@@ -4,6 +4,7 @@ import { useAuth } from "../context/auth-context";
 export default function Navbar() {
   const { user, logout } = useAuth();
   const isStaff = user?.role === "admin" || user?.role === "agent";
+  const isAdmin = user?.role === "admin";
 
   return (
     <div className="navbar bg-base-100 shadow-sm px-4">
@@ -18,6 +19,11 @@ export default function Navbar() {
           {isStaff && (
             <Link to="/board" className="link link-hover">
               Board
+            </Link>
+          )}
+          {isAdmin && (
+            <Link to="/users" className="link link-hover">
+              Users
             </Link>
           )}
         </div>
