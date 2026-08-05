@@ -126,31 +126,6 @@ server/
 <files>
 This section contains the contents of the repository's files.
 
-<file path="server/src/controller/Tickets/TicketHistoryController.ts">
-import type { Request, Response } from "express";
-import { pool } from "../../config/railway.ts";
-
-export const getTicketHistory = async (req: Request, res: Response) => {
-  try {
-    const { ticketId } = req.params;
-
-    const [rows] = await pool.query(
-      `SELECT h.*, u.first_name, u.last_name
-       FROM ticket_history h
-       JOIN users u ON u.id = h.user_id
-       WHERE h.ticket_id = ?
-       ORDER BY h.created_at DESC`,
-      [ticketId],
-    );
-
-    res.status(200).json(rows);
-  } catch (error) {
-    console.error("Error fetching ticket history:", error);
-    res.status(500).json({ error: "Failed to fetch ticket history" });
-  }
-};
-</file>
-
 <file path="client/public/favicon.svg">
 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46"><path fill="#863bff" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z" style="fill:#863bff;fill:color(display-p3 .5252 .23 1);fill-opacity:1"/><mask id="a" width="48" height="46" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z" style="fill:#000;fill-opacity:1"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#ede6ff" rx="5.508" ry="14.704" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#ede6ff" rx="10.399" ry="29.851" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#7e14ff" rx="5.508" ry="30.487" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -32.644 -3.334)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -34.34 30.47)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#ede6ff" rx="14.072" ry="22.078" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="rotate(93.35 24.506 48.493)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx=".387" cy="8.972" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(39.51 .387 8.972)"/></g><g filter="url(#k)"><ellipse cx="47.523" cy="-6.092" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 47.523 -6.092)"/></g><g filter="url(#l)"><ellipse cx="41.412" cy="6.333" fill="#47bfff" rx="5.971" ry="9.665" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 41.412 6.333)"/></g><g filter="url(#m)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#n)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#o)"><ellipse cx="35.651" cy="29.907" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 35.651 29.907)"/></g><g filter="url(#p)"><ellipse cx="38.418" cy="32.4" fill="#47bfff" rx="5.971" ry="15.297" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 38.418 32.4)"/></g></g><defs><filter id="b" width="60.045" height="41.654" x="-19.77" y="16.149" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-54.613" y="-7.533" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-49.64" y="2.03" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-45.045" y="20.029" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-43.513" y="21.178" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="15.756" y="-17.901" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-27.636" y="-22.853" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="20.116" y="-38.415" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="24.641" y="-11.323" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="8.244" y="-2.416" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="18.713" y="10.588" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter></defs></svg>
 </file>
@@ -670,255 +645,6 @@ export default function TicketDetail() {
 }
 </file>
 
-<file path="client/src/pages/TicketForm.tsx">
-import { useEffect, useState } from "react";
-import type { ChangeEvent, FormEvent } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
-import toast from "react-hot-toast";
-import api, { getErrorMessage } from "../lib/api";
-import { useAuth } from "../context/auth-context";
-import type { Ticket, LookupItem } from "../types/tickets";
-
-interface FormState {
-  title: string;
-  description: string;
-  category_id: string;
-  priority_id: string;
-  status_id: string;
-}
-
-const EMPTY_FORM: FormState = {
-  title: "",
-  description: "",
-  category_id: "",
-  priority_id: "",
-  status_id: "",
-};
-
-export default function TicketForm() {
-  const { id } = useParams<{ id: string }>();
-  const isEdit = Boolean(id);
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const isStaff = user?.role === "admin" || user?.role === "agent";
-
-  const [form, setForm] = useState<FormState>(EMPTY_FORM);
-  const [categories, setCategories] = useState<LookupItem[]>([]);
-  const [priorities, setPriorities] = useState<LookupItem[]>([]);
-  const [statuses, setStatuses] = useState<LookupItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      try {
-        const [categoriesRes, prioritiesRes, statusesRes] = await Promise.all([
-          api.get<LookupItem[]>("/categories"),
-          api.get<LookupItem[]>("/priorities"),
-          api.get<LookupItem[]>("/statuses"),
-        ]);
-        setCategories(categoriesRes.data);
-        setPriorities(prioritiesRes.data);
-        setStatuses(statusesRes.data);
-
-        if (isEdit && id) {
-          const { data } = await api.get<Ticket>(`/tickets/${id}`);
-          const isOwner = user?.id === data.created_by;
-
-          if (!isStaff && (!isOwner || data.closed_at)) {
-            toast.error("You don't have permission to edit this ticket");
-            navigate(`/tickets/${id}`);
-            return;
-          }
-
-          setForm({
-            title: data.title,
-            description: data.description,
-            category_id: String(data.category_id),
-            priority_id: String(data.priority_id),
-            status_id: String(data.status_id),
-          });
-        }
-      } catch (err) {
-        toast.error(getErrorMessage(err, "Failed to load form data"));
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, isEdit]);
-
-  const handleChange =
-    (field: keyof FormState) =>
-    (
-      e: ChangeEvent<
-        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >,
-    ) => {
-      setForm((prev) => ({ ...prev, [field]: e.target.value }));
-    };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!user) return;
-
-    setSubmitting(true);
-    try {
-      if (isEdit && id) {
-        const payload: Partial<FormState> = {
-          title: form.title,
-          description: form.description,
-          category_id: form.category_id,
-          priority_id: form.priority_id,
-        };
-        if (isStaff) {
-          payload.status_id = form.status_id;
-        }
-
-        const { data } = await api.put<Ticket>(`/tickets/${id}`, {
-          category_id: Number(form.category_id),
-          priority_id: Number(form.priority_id),
-          ...(isStaff ? { status_id: Number(form.status_id) } : {}),
-        });
-        toast.success("Ticket updated");
-        navigate(`/tickets/${data.id}`);
-      } else {
-        const { data } = await api.post<Ticket>("/tickets", {
-          title: form.title,
-          description: form.description,
-          category_id: Number(form.category_id),
-          priority_id: Number(form.priority_id),
-        });
-        toast.success("Ticket created");
-        navigate(`/tickets/${data.id}`);
-      }
-    } catch (err) {
-      toast.error(
-        getErrorMessage(
-          err,
-          isEdit ? "Failed to update ticket" : "Failed to create ticket",
-        ),
-      );
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  if (loading) {
-    return <div className="flex justify-center p-8">Loading...</div>;
-  }
-
-  return (
-    <div className="max-w-2xl mx-auto">
-      <div className="mb-4">
-        <Link to="/" className="link link-primary text-sm">
-          Back to tickets
-        </Link>
-      </div>
-
-      <form onSubmit={handleSubmit} className="card bg-base-100 shadow-sm">
-        <div className="card-body gap-4">
-          <h1 className="text-xl font-semibold">
-            {isEdit ? "Edit ticket" : "New ticket"}
-          </h1>
-
-          <label className="form-control">
-            <span className="label-text">Title</span>
-            <input
-              className="input input-bordered w-full"
-              value={form.title}
-              onChange={handleChange("title")}
-              required
-            />
-          </label>
-
-          <label className="form-control">
-            <span className="label-text">Description</span>
-            <textarea
-              className="textarea textarea-bordered w-full"
-              rows={5}
-              value={form.description}
-              onChange={handleChange("description")}
-              required
-            />
-          </label>
-
-          <label className="form-control">
-            <span className="label-text">Category</span>
-            <select
-              className="select select-bordered w-full"
-              value={form.category_id}
-              onChange={handleChange("category_id")}
-              required
-            >
-              <option value="" disabled>
-                Select category
-              </option>
-              {categories.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="form-control">
-            <span className="label-text">Priority</span>
-            <select
-              className="select select-bordered w-full"
-              value={form.priority_id}
-              onChange={handleChange("priority_id")}
-              required
-            >
-              <option value="" disabled>
-                Select priority
-              </option>
-              {priorities.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          {isEdit && isStaff && (
-            <label className="form-control">
-              <span className="label-text">Status</span>
-              <select
-                className="select select-bordered w-full"
-                value={form.status_id}
-                onChange={handleChange("status_id")}
-                required
-              >
-                {statuses.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
-
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={submitting}
-          >
-            {submitting
-              ? "Saving..."
-              : isEdit
-                ? "Save changes"
-                : "Create ticket"}
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-}
-</file>
-
 <file path="client/src/types/useAuth.ts">
 export type Role = "admin" | "agent" | "customer";
 
@@ -1183,6 +909,31 @@ export const pool = mysql.createPool({
 });
 </file>
 
+<file path="server/src/controller/Tickets/TicketHistoryController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+export const getTicketHistory = async (req: Request, res: Response) => {
+  try {
+    const { ticketId } = req.params;
+
+    const [rows] = await pool.query(
+      `SELECT h.*, u.first_name, u.last_name
+       FROM ticket_history h
+       JOIN users u ON u.id = h.user_id
+       WHERE h.ticket_id = ?
+       ORDER BY h.created_at DESC`,
+      [ticketId],
+    );
+
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching ticket history:", error);
+    res.status(500).json({ error: "Failed to fetch ticket history" });
+  }
+};
+</file>
+
 <file path="server/src/routes/AttachmentRoutes.ts">
 import { Router } from "express";
 import { authenticateJWT } from "../controller/Authentication/JWTController.ts";
@@ -1443,176 +1194,250 @@ DerivedData/
 *.db
 </file>
 
-<file path="client/src/pages/Tickets.tsx">
+<file path="client/src/pages/TicketForm.tsx">
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import type { ChangeEvent, FormEvent } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import api, { getErrorMessage } from "../lib/api";
+import { useAuth } from "../context/auth-context";
 import type { Ticket, LookupItem } from "../types/tickets";
 
-interface TicketsResponse {
-  data: Ticket[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
+interface FormState {
+  title: string;
+  description: string;
+  category_id: string;
+  priority_id: string;
+  status_id: string;
 }
 
-const PAGE_SIZE = 20;
+const EMPTY_FORM: FormState = {
+  title: "",
+  description: "",
+  category_id: "",
+  priority_id: "",
+  status_id: "",
+};
 
-export default function Tickets() {
-  const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [statuses, setStatuses] = useState<LookupItem[]>([]);
-  const [priorities, setPriorities] = useState<LookupItem[]>([]);
+export default function TicketForm() {
+  const { id } = useParams<{ id: string }>();
+  const isEdit = Boolean(id);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const isStaff = user?.role === "admin" || user?.role === "agent";
+
+  const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [categories, setCategories] = useState<LookupItem[]>([]);
+  const [priorities, setPriorities] = useState<LookupItem[]>([]);
+  const [statuses, setStatuses] = useState<LookupItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadError, setLoadError] = useState(false);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
 
-useEffect(() => {
+  useEffect(() => {
     const load = async () => {
       setLoading(true);
-      setLoadError(false);
       try {
-        const [ticketsRes, statusesRes, prioritiesRes, categoriesRes] = await Promise.all([
-          api.get<TicketsResponse>("/tickets", { params: { page, limit: PAGE_SIZE } }),
-          api.get<LookupItem[]>("/statuses"),
-          api.get<LookupItem[]>("/priorities"),
+        const [categoriesRes, prioritiesRes, statusesRes] = await Promise.all([
           api.get<LookupItem[]>("/categories"),
+          api.get<LookupItem[]>("/priorities"),
+          api.get<LookupItem[]>("/statuses"),
         ]);
-
-        const body = ticketsRes.data;
-        if (!body?.pagination) {
-          throw new Error("Unexpected response shape from /tickets — expected { data, pagination }");
-        }
-
-        setTickets(body.data);
-        const serverTotalPages = body.pagination.totalPages;
-        setTotalPages(serverTotalPages);
-
-        if (serverTotalPages > 0 && page > serverTotalPages) {
-          setPage(serverTotalPages);
-          return;
-        }
-
-        setStatuses(statusesRes.data);
-        setPriorities(prioritiesRes.data);
         setCategories(categoriesRes.data);
+        setPriorities(prioritiesRes.data);
+        setStatuses(statusesRes.data);
+
+        if (isEdit && id) {
+          const { data } = await api.get<Ticket>(`/tickets/${id}`);
+          const isOwner = user?.id === data.created_by;
+
+          if (!isStaff && (!isOwner || data.closed_at)) {
+            toast.error("You don't have permission to edit this ticket");
+            navigate(`/tickets/${id}`);
+            return;
+          }
+
+          setForm({
+            title: data.title,
+            description: data.description,
+            category_id: String(data.category_id),
+            priority_id: String(data.priority_id),
+            status_id: String(data.status_id),
+          });
+        }
       } catch (err) {
-        setLoadError(true);
-        toast.error(getErrorMessage(err, "Failed to load tickets"));
+        toast.error(getErrorMessage(err, "Failed to load form data"));
       } finally {
         setLoading(false);
       }
     };
     load();
-  }, [page]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, isEdit]);
 
-  const statusName = (id: number) =>
-    statuses.find((s) => s.id === id)?.name ?? "Unknown";
-  const priorityName = (id: number) =>
-    priorities.find((p) => p.id === id)?.name ?? "Unknown";
-  const categoryName = (id: number) =>
-    categories.find((c) => c.id === id)?.name ?? "Unknown";
+  const handleChange =
+    (field: keyof FormState) =>
+    (
+      e: ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => {
+      setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+
+    setSubmitting(true);
+    try {
+      if (isEdit && id) {
+        const payload: Partial<FormState> = {
+          title: form.title,
+          description: form.description,
+          category_id: form.category_id,
+          priority_id: form.priority_id,
+        };
+        if (isStaff) {
+          payload.status_id = form.status_id;
+        }
+
+        const { data } = await api.put<Ticket>(`/tickets/${id}`, {
+          category_id: Number(form.category_id),
+          priority_id: Number(form.priority_id),
+          ...(isStaff ? { status_id: Number(form.status_id) } : {}),
+        });
+        toast.success("Ticket updated");
+        navigate(`/tickets/${data.id}`);
+      } else {
+        const { data } = await api.post<Ticket>("/tickets", {
+          title: form.title,
+          description: form.description,
+          category_id: Number(form.category_id),
+          priority_id: Number(form.priority_id),
+        });
+        toast.success("Ticket created");
+        navigate(`/tickets/${data.id}`);
+      }
+    } catch (err) {
+      toast.error(
+        getErrorMessage(
+          err,
+          isEdit ? "Failed to update ticket" : "Failed to create ticket",
+        ),
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   if (loading) {
-    return <div className="flex justify-center p-8">Loading tickets...</div>;
-  }
-
-  if (loadError) {
-    return (
-      <div className="max-w-5xl mx-auto text-center py-12">
-        <p className="text-error mb-2">Couldn't load tickets.</p>
-        <p className="text-base-content/60 text-sm">
-          Check your connection and refresh the page to try again.
-        </p>
-      </div>
-    );
+    return <div className="flex justify-center p-8">Loading...</div>;
   }
 
   return (
-    <div className="max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">Tickets</h1>
-        <Link to="/tickets/new" className="btn btn-primary btn-sm">
-          New ticket
+    <div className="max-w-2xl mx-auto">
+      <div className="mb-4">
+        <Link to="/" className="link link-primary text-sm">
+          Back to tickets
         </Link>
       </div>
 
-      {tickets.length === 0 ? (
-        <div className="text-center text-base-content/60 py-12">
-          No tickets yet.
-        </div>
-      ) : (
-        <>
-          <div className="overflow-x-auto bg-base-100 rounded-box shadow-sm">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Ticket #</th>
-                  <th>Title</th>
-                  <th>Category</th>
-                  <th>Status</th>
-                  <th>Priority</th>
-                  <th>Created</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tickets.map((ticket) => (
-                  <tr key={ticket.id} className="hover">
-                    <td>
-                      <Link
-                        to={`/tickets/${ticket.id}`}
-                        className="link link-primary"
-                      >
-                        {ticket.ticket_number}
-                      </Link>
-                    </td>
-                    <td>{ticket.title}</td>
-                    <td>{categoryName(ticket.category_id)}</td>
-                    <td>
-                      <span className="badge badge-outline">
-                        {statusName(ticket.status_id)}
-                      </span>
-                    </td>
-                    <td>
-                      <span className="badge badge-outline">
-                        {priorityName(ticket.priority_id)}
-                      </span>
-                    </td>
-                    <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      <form onSubmit={handleSubmit} className="card bg-base-100 shadow-sm">
+        <div className="card-body gap-4">
+          <h1 className="text-xl font-semibold">
+            {isEdit ? "Edit ticket" : "New ticket"}
+          </h1>
 
-          {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-2 mt-4">
-              <button
-                className="btn btn-sm"
-                disabled={page === 1}
-                onClick={() => setPage((p) => p - 1)}
+          <label className="form-control">
+            <span className="label-text">Title</span>
+            <input
+              className="input input-bordered w-full"
+              value={form.title}
+              onChange={handleChange("title")}
+              required
+            />
+          </label>
+
+          <label className="form-control">
+            <span className="label-text">Description</span>
+            <textarea
+              className="textarea textarea-bordered w-full"
+              rows={5}
+              value={form.description}
+              onChange={handleChange("description")}
+              required
+            />
+          </label>
+
+          <label className="form-control">
+            <span className="label-text">Category</span>
+            <select
+              className="select select-bordered w-full"
+              value={form.category_id}
+              onChange={handleChange("category_id")}
+              required
+            >
+              <option value="" disabled>
+                Select category
+              </option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="form-control">
+            <span className="label-text">Priority</span>
+            <select
+              className="select select-bordered w-full"
+              value={form.priority_id}
+              onChange={handleChange("priority_id")}
+              required
+            >
+              <option value="" disabled>
+                Select priority
+              </option>
+              {priorities.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {isEdit && isStaff && (
+            <label className="form-control">
+              <span className="label-text">Status</span>
+              <select
+                className="select select-bordered w-full"
+                value={form.status_id}
+                onChange={handleChange("status_id")}
+                required
               >
-                Previous
-              </button>
-              <span className="text-sm text-base-content/60">
-                Page {page} of {totalPages}
-              </span>
-              <button
-                className="btn btn-sm"
-                disabled={page === totalPages}
-                onClick={() => setPage((p) => p + 1)}
-              >
-                Next
-              </button>
-            </div>
+                {statuses.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </label>
           )}
-        </>
-      )}
+
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={submitting}
+          >
+            {submitting
+              ? "Saving..."
+              : isEdit
+                ? "Save changes"
+                : "Create ticket"}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
@@ -1842,211 +1667,6 @@ export const login = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ error: "Failed to log in" });
-  }
-};
-</file>
-
-<file path="server/src/controller/Authentication/RegisterController.ts">
-import bcrypt from "bcryptjs";
-import type { Request, Response } from "express";
-import { pool } from "../../config/railway.ts";
-import { generateToken } from "./JWTController.ts";
-
-const SALT_ROUNDS = 10;
-
-export const register = async (req: Request, res: Response) => {
-  try {
-    const { first_name, last_name, email, password } = req.body;
-
-    if (!first_name || !last_name || !email || !password) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    const [existing] = await pool.query(
-      `SELECT id FROM users WHERE email = ?`,
-      [email],
-    );
-    if ((existing as unknown[]).length > 0) {
-      return res.status(409).json({ error: "Email already registered" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    // Public registration always creates a customer. Admin/agent accounts
-    // are created by an existing admin through the user management routes.
-    const finalRole = "customer";
-
-    const [result] = await pool.query(
-      `INSERT INTO users (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, ?)`,
-      [first_name, last_name, email, hashedPassword, finalRole],
-    );
-
-    const insertId = (result as { insertId: number }).insertId;
-    const token = generateToken({ id: insertId, role: finalRole });
-
-    res.status(201).json({
-      id: insertId,
-      first_name,
-      last_name,
-      email,
-      role: finalRole,
-      token,
-    });
-  } catch (error) {
-    console.error("Error registering user:", error);
-    res.status(500).json({ error: "Failed to register user" });
-  }
-};
-</file>
-
-<file path="server/src/controller/Tickets/CreateController.ts">
-import type { Request, Response } from "express";
-import { pool } from "../../config/railway.ts";
-
-const DEFAULT_STATUS_ID = 1; // "Open"
-
-function generateTicketNumber(): string {
-  const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-  const randomPart = Math.floor(1000 + Math.random() * 9000);
-  return `TKT-${datePart}-${randomPart}`;
-}
-
-export const createTicket = async (req: Request, res: Response) => {
-  try {
-    const {
-      title,
-      description,
-      category_id,
-      priority_id,
-      assigned_to,
-    } = req.body;
-
-    if (!title || !description || !category_id || !priority_id) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    const created_by = req.user!.id;
-    const ticket_number = generateTicketNumber();
-
-    const [result] = await pool.query(
-      `INSERT INTO tickets
-        (ticket_number, title, description, category_id, priority_id, status_id, created_by, assigned_to)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        ticket_number,
-        title,
-        description,
-        category_id,
-        priority_id,
-        DEFAULT_STATUS_ID,
-        created_by,
-        assigned_to ?? null,
-      ],
-    );
-
-    const insertId = (result as { insertId: number }).insertId;
-
-    res.status(201).json({
-      id: insertId,
-      ticket_number,
-      title,
-      description,
-      category_id,
-      priority_id,
-      status_id: DEFAULT_STATUS_ID,
-      created_by,
-      assigned_to: assigned_to ?? null,
-    });
-  } catch (error) {
-    console.error("Error creating ticket:", error);
-    res.status(500).json({ error: "Failed to create ticket" });
-  }
-};
-</file>
-
-<file path="server/src/controller/Tickets/DeleteController.ts">
-import type { Request, Response } from "express";
-import { pool } from "../../config/railway.ts";
-
-export const deleteTicket = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-
-    const [result] = await pool.query(`DELETE FROM tickets WHERE id = ?`, [id]);
-
-    const affectedRows = (result as { affectedRows: number }).affectedRows;
-
-    if (affectedRows === 0) {
-      return res.status(404).json({ error: "Ticket not found" });
-    }
-
-    res.status(204).send();
-  } catch (error) {
-    console.error("Error deleting ticket:", error);
-    res.status(500).json({ error: "Failed to delete ticket" });
-  }
-};
-</file>
-
-<file path="server/src/controller/Tickets/ViewController.ts">
-import type { Request, Response } from "express";
-import type { RowDataPacket } from "mysql2"; // Or your specific DB driver types
-import { pool } from "../../config/railway.ts";
-
-const DEFAULT_PAGE_SIZE = 20;
-const MAX_PAGE_SIZE = 100;
-
-// GET /tickets - list all tickets (paginated, excludes soft-deleted)
-export const getTickets = async (req: Request, res: Response) => {
-  try {
-    const page = Math.max(1, Number(req.query.page) || 1);
-    const limit = Math.min(MAX_PAGE_SIZE, Math.max(1, Number(req.query.limit) || DEFAULT_PAGE_SIZE));
-    const offset = (page - 1) * limit;
-
-    const [rows] = await pool.query(
-      `SELECT * FROM tickets WHERE deleted_at IS NULL ORDER BY created_at DESC LIMIT ? OFFSET ?`,
-      [limit, offset],
-    );
-
-    const [countRows] = await pool.query(
-      `SELECT COUNT(*) AS total FROM tickets WHERE deleted_at IS NULL`,
-    );
-    
-    // Safely cast and check if countRows exists before accessing index 0
-    const counts = countRows as RowDataPacket[];
-    const total = counts?.[0]?.total ?? 0;
-
-    res.status(200).json({
-      data: rows,
-      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
-    });
-  } catch (error) {
-    console.error("Error fetching tickets:", error);
-    res.status(500).json({ error: "Failed to fetch tickets" });
-  }
-};
-
-// GET /tickets/:id - single ticket (excludes soft-deleted)
-export const getTicketById = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-
-    const [rows] = await pool.query(
-      `SELECT * FROM tickets WHERE id = ? AND deleted_at IS NULL`,
-      [id],
-    );
-    
-    // Cast to an array of objects
-    const tickets = rows as RowDataPacket[];
-
-    // Check if tickets array exists and has elements
-    if (!tickets || tickets.length === 0) {
-      return res.status(404).json({ error: "Ticket not found" });
-    }
-
-    res.status(200).json(tickets[0]);
-  } catch (error) {
-    console.error("Error fetching ticket:", error);
-    res.status(500).json({ error: "Failed to fetch ticket" });
   }
 };
 </file>
@@ -2552,203 +2172,385 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 </file>
 
-<file path="server/src/controller/Tickets/AssignController.ts">
+<file path="client/src/pages/Tickets.tsx">
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import api, { getErrorMessage } from "../lib/api";
+import type { Ticket, LookupItem } from "../types/tickets";
+
+interface TicketsResponse {
+  data: Ticket[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+const PAGE_SIZE = 20;
+
+export default function Tickets() {
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [statuses, setStatuses] = useState<LookupItem[]>([]);
+  const [priorities, setPriorities] = useState<LookupItem[]>([]);
+  const [categories, setCategories] = useState<LookupItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      setLoadError(false);
+      try {
+        const [ticketsRes, statusesRes, prioritiesRes, categoriesRes] = await Promise.all([
+          api.get<TicketsResponse>("/tickets", { params: { page, limit: PAGE_SIZE } }),
+          api.get<LookupItem[]>("/statuses"),
+          api.get<LookupItem[]>("/priorities"),
+          api.get<LookupItem[]>("/categories"),
+        ]);
+
+        const body = ticketsRes.data;
+        if (!body?.pagination) {
+          throw new Error("Unexpected response shape from /tickets — expected { data, pagination }");
+        }
+
+        setTickets(body.data);
+        const serverTotalPages = body.pagination.totalPages;
+        setTotalPages(serverTotalPages);
+
+        if (serverTotalPages > 0 && page > serverTotalPages) {
+          setPage(serverTotalPages);
+          return;
+        }
+
+        setStatuses(statusesRes.data);
+        setPriorities(prioritiesRes.data);
+        setCategories(categoriesRes.data);
+      } catch (err) {
+        setLoadError(true);
+        toast.error(getErrorMessage(err, "Failed to load tickets"));
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, [page]);
+
+  const statusName = (id: number) =>
+    statuses.find((s) => s.id === id)?.name ?? "Unknown";
+  const priorityName = (id: number) =>
+    priorities.find((p) => p.id === id)?.name ?? "Unknown";
+  const categoryName = (id: number) =>
+    categories.find((c) => c.id === id)?.name ?? "Unknown";
+
+  if (loading) {
+    return <div className="flex justify-center p-8">Loading tickets...</div>;
+  }
+
+  if (loadError) {
+    return (
+      <div className="max-w-5xl mx-auto text-center py-12">
+        <p className="text-error mb-2">Couldn't load tickets.</p>
+        <p className="text-base-content/60 text-sm">
+          Check your connection and refresh the page to try again.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-5xl mx-auto">
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold">Tickets</h1>
+        <Link to="/tickets/new" className="btn btn-primary btn-sm">
+          New ticket
+        </Link>
+      </div>
+
+      {tickets.length === 0 ? (
+        <div className="text-center text-base-content/60 py-12">
+          No tickets yet.
+        </div>
+      ) : (
+        <>
+          <div className="overflow-x-auto bg-base-100 rounded-box shadow-sm">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Ticket #</th>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Priority</th>
+                  <th>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tickets.map((ticket) => (
+                  <tr key={ticket.id} className="hover">
+                    <td>
+                      <Link
+                        to={`/tickets/${ticket.id}`}
+                        className="link link-primary"
+                      >
+                        {ticket.ticket_number}
+                      </Link>
+                    </td>
+                    <td>{ticket.title}</td>
+                    <td>{categoryName(ticket.category_id)}</td>
+                    <td>
+                      <span className="badge badge-outline">
+                        {statusName(ticket.status_id)}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="badge badge-outline">
+                        {priorityName(ticket.priority_id)}
+                      </span>
+                    </td>
+                    <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-4">
+              <button
+                className="btn btn-sm"
+                disabled={page === 1}
+                onClick={() => setPage((p) => p - 1)}
+              >
+                Previous
+              </button>
+              <span className="text-sm text-base-content/60">
+                Page {page} of {totalPages}
+              </span>
+              <button
+                className="btn btn-sm"
+                disabled={page === totalPages}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+</file>
+
+<file path="server/src/controller/Authentication/RegisterController.ts">
+import bcrypt from "bcryptjs";
 import type { Request, Response } from "express";
 import { pool } from "../../config/railway.ts";
+import { generateToken } from "./JWTController.ts";
 
-interface AgentRow {
-  id: number;
-  role: string;
-}
+const SALT_ROUNDS = 10;
 
-interface TicketRow {
-  id: number;
-  assigned_to: number | null;
-}
-
-export const assignTicket = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const { assigned_to } = req.body;
-    const userId = req.user!.id;
+    const { first_name, last_name, email, password } = req.body;
 
-    if (!assigned_to) {
-      return res.status(400).json({ error: "assigned_to is required" });
+    if (!first_name || !last_name || !email || !password) {
+      return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // 1. Validate assigned user is a valid agent
-    const [agentRows] = await pool.query(
-      `SELECT id, role FROM users WHERE id = ?`,
-      [assigned_to],
+    const [existing] = await pool.query(
+      `SELECT id FROM users WHERE email = ?`,
+      [email],
     );
-    const agent = (agentRows as AgentRow[])[0];
-    if (!agent || agent.role !== "agent") {
-      return res
-        .status(400)
-        .json({ error: "assigned_to must be a valid agent" });
+    if ((existing as unknown[]).length > 0) {
+      return res.status(409).json({ error: "Email already registered" });
     }
 
-    // 2. Fetch current ticket assignment state
-    const [ticketRows] = await pool.query(
-      `SELECT id, assigned_to FROM tickets WHERE id = ?`,
-      [id],
-    );
-    const ticket = (ticketRows as TicketRow[])[0];
-    if (!ticket) {
-      return res.status(404).json({ error: "Ticket not found" });
-    }
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    // Public registration always creates a customer. Admin/agent accounts
+    // are created by an existing admin through the user management routes.
+    const finalRole = "customer";
 
-    // 3. Update assignment
     const [result] = await pool.query(
-      `UPDATE tickets SET assigned_to = ? WHERE id = ?`,
-      [assigned_to, id],
+      `INSERT INTO users (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, ?)`,
+      [first_name, last_name, email, hashedPassword, finalRole],
     );
 
-    const affectedRows = (result as { affectedRows: number }).affectedRows;
-    if (affectedRows === 0) {
-      return res.status(404).json({ error: "Ticket not found" });
-    }
+    const insertId = (result as { insertId: number }).insertId;
+    const token = generateToken({ id: insertId, role: finalRole });
 
-    // 4. Log history if assignment changed
-    if (ticket.assigned_to !== assigned_to) {
-      await pool.query(
-        `INSERT INTO ticket_history (ticket_id, user_id, action, old_value, new_value) VALUES (?, ?, 'assigned_to', ?, ?)`,
-        [
-          id,
-          userId,
-          ticket.assigned_to === null ? null : String(ticket.assigned_to),
-          String(assigned_to),
-        ],
-      );
-    }
-
-    res.status(200).json({ id, assigned_to });
+    res.status(201).json({
+      id: insertId,
+      first_name,
+      last_name,
+      email,
+      role: finalRole,
+      token,
+    });
   } catch (error) {
-    console.error("Error assigning ticket:", error);
-    res.status(500).json({ error: "Failed to assign ticket" });
+    console.error("Error registering user:", error);
+    res.status(500).json({ error: "Failed to register user" });
   }
 };
 </file>
 
-<file path="server/src/controller/Tickets/UpdateController.ts">
+<file path="server/src/controller/Tickets/CreateController.ts">
 import type { Request, Response } from "express";
 import { pool } from "../../config/railway.ts";
 
-const STAFF_ALLOWED_FIELDS = [
-  "title",
-  "description",
-  "category_id",
-  "priority_id",
-  "status_id",
-] as const;
+const DEFAULT_STATUS_ID = 1; // "Open"
 
-const CUSTOMER_ALLOWED_FIELDS = [
-  "title",
-  "description",
-  "category_id",
-  "priority_id",
-] as const;
-
-interface TicketRow {
-  id: number;
-  title: string;
-  description: string;
-  category_id: number;
-  priority_id: number;
-  status_id: number;
-  created_by: number;
-  closed_at: string | null;
+function generateTicketNumber(): string {
+  const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const randomPart = Math.floor(1000 + Math.random() * 9000);
+  return `TKT-${datePart}-${randomPart}`;
 }
 
-export const updateTicket = async (req: Request, res: Response) => {
+export const createTicket = async (req: Request, res: Response) => {
+  try {
+    const {
+      title,
+      description,
+      category_id,
+      priority_id,
+      assigned_to,
+    } = req.body;
+
+    if (!title || !description || !category_id || !priority_id) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const created_by = req.user!.id;
+    const ticket_number = generateTicketNumber();
+
+    const [result] = await pool.query(
+      `INSERT INTO tickets
+        (ticket_number, title, description, category_id, priority_id, status_id, created_by, assigned_to)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        ticket_number,
+        title,
+        description,
+        category_id,
+        priority_id,
+        DEFAULT_STATUS_ID,
+        created_by,
+        assigned_to ?? null,
+      ],
+    );
+
+    const insertId = (result as { insertId: number }).insertId;
+
+    res.status(201).json({
+      id: insertId,
+      ticket_number,
+      title,
+      description,
+      category_id,
+      priority_id,
+      status_id: DEFAULT_STATUS_ID,
+      created_by,
+      assigned_to: assigned_to ?? null,
+    });
+  } catch (error) {
+    console.error("Error creating ticket:", error);
+    res.status(500).json({ error: "Failed to create ticket" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Tickets/DeleteController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+export const deleteTicket = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { role, id: userId } = req.user!;
 
-    // 1. Fetch current ticket to compare changes and verify permissions
-    const [rows] = await pool.query(
-      `SELECT id, title, description, category_id, priority_id, status_id, created_by, closed_at 
-       FROM tickets WHERE id = ?`,
+    const [result] = await pool.query(
+      `UPDATE tickets SET deleted_at = NOW() WHERE id = ? AND deleted_at IS NULL`,
       [id],
     );
 
-    const ticket = (rows as TicketRow[])[0];
-    if (!ticket) {
-      return res.status(404).json({ error: "Ticket not found" });
-    }
-
-    const isStaff = role === "admin" || role === "agent";
-    const isOwner = ticket.created_by === userId;
-
-    if (!isStaff && !isOwner) {
-      return res.status(403).json({ error: "Insufficient permissions" });
-    }
-
-    if (!isStaff && ticket.closed_at) {
-      return res.status(403).json({ error: "Cannot edit a closed ticket" });
-    }
-
-    // 2. Filter allowed fields
-    const allowedFields = isStaff
-      ? STAFF_ALLOWED_FIELDS
-      : CUSTOMER_ALLOWED_FIELDS;
-    const updates: Record<string, unknown> = {};
-
-    for (const field of allowedFields) {
-      if (req.body[field] !== undefined) {
-        updates[field] = req.body[field];
-      }
-    }
-
-    if (Object.keys(updates).length === 0) {
-      return res.status(400).json({ error: "No valid fields to update" });
-    }
-
-    // 3. Build history entries by comparing old vs new values
-    const historyEntries = Object.entries(updates)
-      .filter(
-        ([field, newValue]) =>
-          String(ticket[field as keyof TicketRow] ?? "") !==
-          String(newValue ?? ""),
-      )
-      .map(([field, newValue]) => [
-        id,
-        userId,
-        field, // maps to 'action' column
-        ticket[field as keyof TicketRow] === null
-          ? null
-          : String(ticket[field as keyof TicketRow]),
-        newValue === null ? null : String(newValue),
-      ]);
-
-    // 4. Perform update query
-    const setClause = Object.keys(updates)
-      .map((field) => `${field} = ?`)
-      .join(", ");
-    const values = [...Object.values(updates), id];
-
-    const [result] = await pool.query(
-      `UPDATE tickets SET ${setClause} WHERE id = ?`,
-      values,
-    );
-
     const affectedRows = (result as { affectedRows: number }).affectedRows;
+
     if (affectedRows === 0) {
       return res.status(404).json({ error: "Ticket not found" });
     }
 
-    // 5. Record audit logs in ticket_history
-    if (historyEntries.length > 0) {
-      await pool.query(
-        `INSERT INTO ticket_history (ticket_id, user_id, action, old_value, new_value) VALUES ?`,
-        [historyEntries],
-      );
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting ticket:", error);
+    res.status(500).json({ error: "Failed to delete ticket" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Tickets/ViewController.ts">
+import type { Request, Response } from "express";
+import type { RowDataPacket } from "mysql2"; // Or your specific DB driver types
+import { pool } from "../../config/railway.ts";
+
+const DEFAULT_PAGE_SIZE = 20;
+const MAX_PAGE_SIZE = 100;
+
+// GET /tickets - list all tickets (paginated, excludes soft-deleted)
+export const getTickets = async (req: Request, res: Response) => {
+  try {
+    const page = Math.max(1, Number(req.query.page) || 1);
+    const limit = Math.min(MAX_PAGE_SIZE, Math.max(1, Number(req.query.limit) || DEFAULT_PAGE_SIZE));
+    const offset = (page - 1) * limit;
+
+    const [rows] = await pool.query(
+      `SELECT * FROM tickets WHERE deleted_at IS NULL ORDER BY created_at DESC LIMIT ? OFFSET ?`,
+      [limit, offset],
+    );
+
+    const [countRows] = await pool.query(
+      `SELECT COUNT(*) AS total FROM tickets WHERE deleted_at IS NULL`,
+    );
+    
+    // Safely cast and check if countRows exists before accessing index 0
+    const counts = countRows as RowDataPacket[];
+    const total = counts?.[0]?.total ?? 0;
+
+    res.status(200).json({
+      data: rows,
+      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    });
+  } catch (error) {
+    console.error("Error fetching tickets:", error);
+    res.status(500).json({ error: "Failed to fetch tickets" });
+  }
+};
+
+// GET /tickets/:id - single ticket (excludes soft-deleted)
+export const getTicketById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const [rows] = await pool.query(
+      `SELECT * FROM tickets WHERE id = ? AND deleted_at IS NULL`,
+      [id],
+    );
+    
+    // Cast to an array of objects
+    const tickets = rows as RowDataPacket[];
+
+    // Check if tickets array exists and has elements
+    if (!tickets || tickets.length === 0) {
+      return res.status(404).json({ error: "Ticket not found" });
     }
 
-    res.status(200).json({ id, ...updates });
+    res.status(200).json(tickets[0]);
   } catch (error) {
-    console.error("Error updating ticket:", error);
-    res.status(500).json({ error: "Failed to update ticket" });
+    console.error("Error fetching ticket:", error);
+    res.status(500).json({ error: "Failed to fetch ticket" });
   }
 };
 </file>
@@ -3000,39 +2802,6 @@ export const deleteComment = async (req: Request, res: Response) => {
 };
 </file>
 
-<file path="server/src/routes/TicketRoutes.ts">
-import { Router } from "express";
-import { authenticateJWT, authorizeRoles  } from "../controller/Authentication/JWTController.ts";
-import { createTicket } from "../controller/Tickets/CreateController.ts";
-import { getTickets, getTicketById } from "../controller/Tickets/ViewController.ts";
-import { updateTicket } from "../controller/Tickets/UpdateController.ts";
-import { deleteTicket } from "../controller/Tickets/DeleteController.ts";
-import { assignTicket } from "../controller/Tickets/AssignController.ts";
-import { getCommentsByTicket, createComment } from "../controller/CommentsController.ts";
-import { getAttachmentsByTicket, createAttachment } from "../controller/AttachmentsController.ts";
-import { getTicketHistory } from "../controller/Tickets/TicketHistoryController.ts";
-
-const router = Router();
-
-router.use(authenticateJWT);
-
-router.get("/", getTickets);
-router.get("/:id", getTicketById);  
-router.get("/:ticketId/history", authenticateJWT, getTicketHistory);
-router.post("/", createTicket);
-router.put("/:id", updateTicket);
-router.delete("/:id", deleteTicket);
-router.put("/:id/assign", authorizeRoles("admin", "agent"), assignTicket);
-
-router.get("/:ticketId/comments", getCommentsByTicket);
-router.post("/:ticketId/comments", createComment);
-
-router.get("/:ticketId/attachments", getAttachmentsByTicket);
-router.post("/:ticketId/attachments", createAttachment);
-
-export default router;
-</file>
-
 <file path="server/src/envConfig.ts">
 import dotenv from "dotenv";
 import type { SignOptions } from "jsonwebtoken";
@@ -3172,6 +2941,240 @@ const App = () => {
 };
 
 export default App;
+</file>
+
+<file path="server/src/controller/Tickets/AssignController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+interface AgentRow {
+  id: number;
+  role: string;
+}
+
+interface TicketRow {
+  id: number;
+  assigned_to: number | null;
+}
+
+export const assignTicket = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { assigned_to } = req.body;
+    const userId = req.user!.id;
+
+    if (!assigned_to) {
+      return res.status(400).json({ error: "assigned_to is required" });
+    }
+
+    // 1. Validate assigned user is a valid agent
+    const [agentRows] = await pool.query(
+      `SELECT id, role FROM users WHERE id = ?`,
+      [assigned_to],
+    );
+    const agent = (agentRows as AgentRow[])[0];
+    if (!agent || agent.role !== "agent") {
+      return res
+        .status(400)
+        .json({ error: "assigned_to must be a valid agent" });
+    }
+
+    // 2. Fetch current ticket assignment state
+    const [ticketRows] = await pool.query(
+      `SELECT id, assigned_to FROM tickets WHERE id = ? AND deleted_at IS NULL`,
+      [id],
+    );
+    const ticket = (ticketRows as TicketRow[])[0];
+    if (!ticket) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    // 3. Update assignment
+    const [result] = await pool.query(
+      `UPDATE tickets SET assigned_to = ? WHERE id = ?`,
+      [assigned_to, id],
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    // 4. Log history if assignment changed
+    if (ticket.assigned_to !== assigned_to) {
+      await pool.query(
+        `INSERT INTO ticket_history (ticket_id, user_id, action, old_value, new_value) VALUES (?, ?, 'assigned_to', ?, ?)`,
+        [
+          id,
+          userId,
+          ticket.assigned_to === null ? null : String(ticket.assigned_to),
+          String(assigned_to),
+        ],
+      );
+    }
+
+    res.status(200).json({ id, assigned_to });
+  } catch (error) {
+    console.error("Error assigning ticket:", error);
+    res.status(500).json({ error: "Failed to assign ticket" });
+  }
+};
+</file>
+
+<file path="server/src/controller/Tickets/UpdateController.ts">
+import type { Request, Response } from "express";
+import { pool } from "../../config/railway.ts";
+
+const STAFF_ALLOWED_FIELDS = [
+  "title",
+  "description",
+  "category_id",
+  "priority_id",
+  "status_id",
+] as const;
+
+const CUSTOMER_ALLOWED_FIELDS = [
+  "title",
+  "description",
+  "category_id",
+  "priority_id",
+] as const;
+
+interface TicketRow {
+  id: number;
+  title: string;
+  description: string;
+  category_id: number;
+  priority_id: number;
+  status_id: number;
+  created_by: number;
+  closed_at: string | null;
+}
+
+export const updateTicket = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { role, id: userId } = req.user!;
+
+    // 1. Fetch current ticket to compare changes and verify permissions
+    const [rows] = await pool.query(
+      `SELECT id, title, description, category_id, priority_id, status_id, created_by, closed_at 
+       FROM tickets WHERE id = ? AND deleted_at IS NULL`,
+      [id],
+    );
+
+    const ticket = (rows as TicketRow[])[0];
+    if (!ticket) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    const isStaff = role === "admin" || role === "agent";
+    const isOwner = ticket.created_by === userId;
+
+    if (!isStaff && !isOwner) {
+      return res.status(403).json({ error: "Insufficient permissions" });
+    }
+
+    if (!isStaff && ticket.closed_at) {
+      return res.status(403).json({ error: "Cannot edit a closed ticket" });
+    }
+
+    // 2. Filter allowed fields
+    const allowedFields = isStaff
+      ? STAFF_ALLOWED_FIELDS
+      : CUSTOMER_ALLOWED_FIELDS;
+    const updates: Record<string, unknown> = {};
+
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) {
+        updates[field] = req.body[field];
+      }
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ error: "No valid fields to update" });
+    }
+
+    // 3. Build history entries by comparing old vs new values
+    const historyEntries = Object.entries(updates)
+      .filter(
+        ([field, newValue]) =>
+          String(ticket[field as keyof TicketRow] ?? "") !==
+          String(newValue ?? ""),
+      )
+      .map(([field, newValue]) => [
+        id,
+        userId,
+        field, // maps to 'action' column
+        ticket[field as keyof TicketRow] === null
+          ? null
+          : String(ticket[field as keyof TicketRow]),
+        newValue === null ? null : String(newValue),
+      ]);
+
+    // 4. Perform update query
+    const setClause = Object.keys(updates)
+      .map((field) => `${field} = ?`)
+      .join(", ");
+    const values = [...Object.values(updates), id];
+
+    const [result] = await pool.query(
+      `UPDATE tickets SET ${setClause} WHERE id = ?`,
+      values,
+    );
+
+    const affectedRows = (result as { affectedRows: number }).affectedRows;
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    // 5. Record audit logs in ticket_history
+    if (historyEntries.length > 0) {
+      await pool.query(
+        `INSERT INTO ticket_history (ticket_id, user_id, action, old_value, new_value) VALUES ?`,
+        [historyEntries],
+      );
+    }
+
+    res.status(200).json({ id, ...updates });
+  } catch (error) {
+    console.error("Error updating ticket:", error);
+    res.status(500).json({ error: "Failed to update ticket" });
+  }
+};
+</file>
+
+<file path="server/src/routes/TicketRoutes.ts">
+import { Router } from "express";
+import { authenticateJWT, authorizeRoles  } from "../controller/Authentication/JWTController.ts";
+import { createTicket } from "../controller/Tickets/CreateController.ts";
+import { getTickets, getTicketById } from "../controller/Tickets/ViewController.ts";
+import { updateTicket } from "../controller/Tickets/UpdateController.ts";
+import { deleteTicket } from "../controller/Tickets/DeleteController.ts";
+import { assignTicket } from "../controller/Tickets/AssignController.ts";
+import { getCommentsByTicket, createComment } from "../controller/CommentsController.ts";
+import { getAttachmentsByTicket, createAttachment } from "../controller/AttachmentsController.ts";
+import { getTicketHistory } from "../controller/Tickets/TicketHistoryController.ts";
+
+const router = Router();
+
+router.use(authenticateJWT);
+
+router.get("/", getTickets);
+router.get("/:id", getTicketById);  
+router.get("/:ticketId/history", authenticateJWT, getTicketHistory);
+router.post("/", createTicket);
+router.put("/:id", updateTicket);
+router.delete("/:id", deleteTicket);
+router.put("/:id/assign", authorizeRoles("admin", "agent"), assignTicket);
+
+router.get("/:ticketId/comments", getCommentsByTicket);
+router.post("/:ticketId/comments", createComment);
+
+router.get("/:ticketId/attachments", getAttachmentsByTicket);
+router.post("/:ticketId/attachments", createAttachment);
+
+export default router;
 </file>
 
 <file path="server/src/server.ts">

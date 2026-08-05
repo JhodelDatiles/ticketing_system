@@ -34,3 +34,15 @@ export interface Attachment {
   uploaded_by: number;
   uploaded_at: string;
 }
+
+export interface BoardTicket {
+  id: number;
+  ticket_number: string;
+  title: string;
+  category_id: number;
+  priority_id: number;
+  status_id: number;
+  assigned_to: number | null;
+  created_by: number;
+  created_at: string;
+}

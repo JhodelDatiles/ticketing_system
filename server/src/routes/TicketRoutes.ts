@@ -8,12 +8,18 @@ import { assignTicket } from "../controller/Tickets/AssignController.ts";
 import { getCommentsByTicket, createComment } from "../controller/CommentsController.ts";
 import { getAttachmentsByTicket, createAttachment } from "../controller/AttachmentsController.ts";
 import { getTicketHistory } from "../controller/Tickets/TicketHistoryController.ts";
+import { getTicketsForBoard } from "../controller/Tickets/BoardController.ts";
+import { reorderTickets } from "../controller/Tickets/ReorderController.ts";
+
+
 
 const router = Router();
 
 router.use(authenticateJWT);
 
 router.get("/", getTickets);
+router.get("/board", authorizeRoles("admin", "agent"), getTicketsForBoard); 
+router.put("/reorder", authorizeRoles("admin", "agent"), reorderTickets); 
 router.get("/:id", getTicketById);  
 router.get("/:ticketId/history", authenticateJWT, getTicketHistory);
 router.post("/", createTicket);
