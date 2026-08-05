@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import Tickets from "./pages/Tickets";
 import TicketDetail from "./pages/TicketDetail";
 import TicketForm from "./pages/TicketForm";
+import Board from "./pages/Board";
 
 const App = () => {
   return (
@@ -53,6 +54,16 @@ const App = () => {
               <ProtectedRoute>
                 <Layout>
                   <TicketForm />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/board"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "agent"]}>
+                <Layout>
+                  <Board />
                 </Layout>
               </ProtectedRoute>
             }

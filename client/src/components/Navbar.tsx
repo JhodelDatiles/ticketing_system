@@ -3,13 +3,24 @@ import { useAuth } from "../context/auth-context";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const isStaff = user?.role === "admin" || user?.role === "agent";
 
   return (
     <div className="navbar bg-base-100 shadow-sm px-4">
-      <div className="flex-1">
+      <div className="flex-1 items-center gap-6">
         <Link to="/" className="text-lg font-semibold">
           Ticket Desk
         </Link>
+        <div className="flex gap-4 text-sm">
+          <Link to="/" className="link link-hover">
+            Tickets
+          </Link>
+          {isStaff && (
+            <Link to="/board" className="link link-hover">
+              Board
+            </Link>
+          )}
+        </div>
       </div>
       <div className="flex items-center gap-3">
         {user && (
