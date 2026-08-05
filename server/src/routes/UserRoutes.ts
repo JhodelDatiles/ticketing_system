@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { authenticateJWT, authorizeRoles } from "../controller/Authentication/JWTController.ts";
+import { createUser } from "../controller/Users/CreateUserController.ts";
 import { getAdmins, updateAdmin, deleteAdmin } from "../controller/Users/AdminsController.ts";
 import { getAgents, updateAgent, deleteAgent } from "../controller/Users/AgentsController.ts";
 import { getCustomers, updateCustomer, deleteCustomer } from "../controller/Users/CustomersController.ts";
@@ -7,6 +8,8 @@ import { getCustomers, updateCustomer, deleteCustomer } from "../controller/User
 const router = Router();
 
 router.use(authenticateJWT, authorizeRoles("admin"));
+
+router.post("/", createUser);
 // Admin routes
 router.get("/admins", getAdmins);
 router.put("/admins/:id", updateAdmin);

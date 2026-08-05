@@ -1,10 +1,23 @@
 import type { Request, Response } from "express";
 import { pool } from "../config/railway.ts";
+import { getPagination, paginationMeta } from "../utils/pagination.ts";
 
 export const getCategories = async (req: Request, res: Response) => {
   try {
-    const [rows] = await pool.query(`SELECT * FROM categories ORDER BY name`);
-    res.status(200).json(rows);
+    const { page, limit, offset } = getPagination(req);
+
+    const [rows] = await pool.query(
+      `SELECT * FROM categories ORDER BY name LIMIT ? OFFSET ?`,
+      [limit, offset],
+    );
+    const [countRows] = await pool.query(
+      `SELECT COUNT(*) AS total FROM categories`,
+    );
+    const total = (countRows as { total: number }[])[0]?.total ?? 0;
+
+    res
+      .status(200)
+      .json({ data: rows, pagination: paginationMeta(total, page, limit) });
   } catch (error) {
     console.error("Error fetching categories:", error);
     res.status(500).json({ error: "Failed to fetch categories" });

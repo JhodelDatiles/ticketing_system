@@ -1,12 +1,21 @@
 import type { Request, Response } from "express";
 import { pool } from "../../config/railway.ts";
+import { getPagination, paginationMeta } from "../../utils/pagination.ts";
 
 export const getAdmins = async (req: Request, res: Response) => {
   try {
+    const { page, limit, offset } = getPagination(req);
+
     const [rows] = await pool.query(
-      `SELECT id, first_name, last_name, email FROM users WHERE role = 'admin'`,
+      `SELECT id, first_name, last_name, email FROM users WHERE role = 'admin' LIMIT ? OFFSET ?`,
+      [limit, offset],
     );
-    res.status(200).json(rows);
+    const [countRows] = await pool.query(
+      `SELECT COUNT(*) AS total FROM users WHERE role = 'admin'`,
+    );
+    const total = (countRows as { total: number }[])[0]?.total ?? 0;
+
+    res.status(200).json({ data: rows, pagination: paginationMeta(total, page, limit) });
   } catch (error) {
     console.error("Error fetching admins:", error);
     res.status(500).json({ error: "Failed to fetch admins" });
@@ -39,6 +48,11 @@ export const updateAdmin = async (req: Request, res: Response) => {
 export const deleteAdmin = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+
+    if (Number(id) === req.user!.id) {
+      return res.status(400).json({ error: "You can't delete your own account" });
+    }
+
     const [result] = await pool.query(
       `DELETE FROM users WHERE id = ? AND role = 'admin'`,
       [id],
