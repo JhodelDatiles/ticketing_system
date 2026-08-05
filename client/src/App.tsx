@@ -9,6 +9,7 @@ import Tickets from "./pages/Tickets";
 import TicketDetail from "./pages/TicketDetail";
 import TicketForm from "./pages/TicketForm";
 import Board from "./pages/Board";
+import Users from "./pages/User";
 
 const App = () => {
   return (
@@ -64,6 +65,16 @@ const App = () => {
               <ProtectedRoute allowedRoles={["admin", "agent"]}>
                 <Layout>
                   <Board />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <Layout>
+                  <Users />
                 </Layout>
               </ProtectedRoute>
             }

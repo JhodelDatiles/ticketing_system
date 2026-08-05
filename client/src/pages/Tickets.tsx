@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import api, { getErrorMessage } from "../lib/api";
-import type { Ticket, LookupItem } from "../types/tickets";
+import type { Ticket, LookupItem, PaginatedResponse } from "../types/tickets";
 
 interface TicketsResponse {
   data: Ticket[];
@@ -26,21 +26,32 @@ export default function Tickets() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-useEffect(() => {
+  useEffect(() => {
     const load = async () => {
       setLoading(true);
       setLoadError(false);
       try {
-        const [ticketsRes, statusesRes, prioritiesRes, categoriesRes] = await Promise.all([
-          api.get<TicketsResponse>("/tickets", { params: { page, limit: PAGE_SIZE } }),
-          api.get<LookupItem[]>("/statuses"),
-          api.get<LookupItem[]>("/priorities"),
-          api.get<LookupItem[]>("/categories"),
-        ]);
+        const [ticketsRes, statusesRes, prioritiesRes, categoriesRes] =
+          await Promise.all([
+            api.get<TicketsResponse>("/tickets", {
+              params: { page, limit: PAGE_SIZE },
+            }),
+            api.get<PaginatedResponse<LookupItem>>("/statuses", {
+              params: { limit: 200 },
+            }),
+            api.get<PaginatedResponse<LookupItem>>("/priorities", {
+              params: { limit: 200 },
+            }),
+            api.get<PaginatedResponse<LookupItem>>("/categories", {
+              params: { limit: 200 },
+            }),
+          ]);
 
         const body = ticketsRes.data;
         if (!body?.pagination) {
-          throw new Error("Unexpected response shape from /tickets — expected { data, pagination }");
+          throw new Error(
+            "Unexpected response shape from /tickets — expected { data, pagination }",
+          );
         }
 
         setTickets(body.data);
@@ -52,9 +63,9 @@ useEffect(() => {
           return;
         }
 
-        setStatuses(statusesRes.data);
-        setPriorities(prioritiesRes.data);
-        setCategories(categoriesRes.data);
+        setStatuses(statusesRes.data.data);
+        setPriorities(prioritiesRes.data.data);
+        setCategories(categoriesRes.data.data);
       } catch (err) {
         setLoadError(true);
         toast.error(getErrorMessage(err, "Failed to load tickets"));

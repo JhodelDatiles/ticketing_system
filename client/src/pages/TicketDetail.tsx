@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
-import type { FormEvent } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import api, { getErrorMessage } from "../lib/api";
 import { useAuth } from "../context/auth-context";
-import type { Ticket, LookupItem, Comment, Attachment } from "../types/tickets";
+import type {
+  Ticket,
+  LookupItem,
+  Comment,
+  Attachment,
+  PaginatedResponse,
+} from "../types/tickets";
 
 export default function TicketDetail() {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +28,8 @@ export default function TicketDetail() {
   const [notFound, setNotFound] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -41,16 +49,22 @@ export default function TicketDetail() {
           api.get<Ticket>(`/tickets/${id}`),
           api.get<Comment[]>(`/tickets/${id}/comments`),
           api.get<Attachment[]>(`/tickets/${id}/attachments`),
-          api.get<LookupItem[]>("/statuses"),
-          api.get<LookupItem[]>("/priorities"),
-          api.get<LookupItem[]>("/categories"),
+          api.get<PaginatedResponse<LookupItem>>("/statuses", {
+            params: { limit: 200 },
+          }),
+          api.get<PaginatedResponse<LookupItem>>("/priorities", {
+            params: { limit: 200 },
+          }),
+          api.get<PaginatedResponse<LookupItem>>("/categories", {
+            params: { limit: 200 },
+          }),
         ]);
         setTicket(ticketRes.data);
         setComments(commentsRes.data);
         setAttachments(attachmentsRes.data);
-        setStatuses(statusesRes.data);
-        setPriorities(prioritiesRes.data);
-        setCategories(categoriesRes.data);
+        setStatuses(statusesRes.data.data);
+        setPriorities(prioritiesRes.data.data);
+        setCategories(categoriesRes.data.data);
       } catch (err) {
         if (axios.isAxiosError(err) && err.response?.status === 404) {
           setNotFound(true);
@@ -88,6 +102,47 @@ export default function TicketDetail() {
       toast.error(getErrorMessage(err, "Failed to add comment"));
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !id) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    setUploading(true);
+    try {
+      const { data } = await api.post<Attachment>(
+        `/tickets/${id}/attachments`,
+        formData,
+      );
+      setAttachments((prev) => [data, ...prev]);
+      toast.success("File uploaded");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Failed to upload file"));
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
+
+  const handleDownload = async (attachment: Attachment) => {
+    try {
+      const res = await api.get(`/attachments/${attachment.id}/download`, {
+        responseType: "blob",
+      });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = attachment.file_name;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Failed to download attachment"));
     }
   };
 
@@ -160,14 +215,30 @@ export default function TicketDetail() {
         <div className="card-body">
           <h2 className="font-semibold mb-2">Attachments</h2>
           {attachments.length === 0 ? (
-            <p className="text-sm text-base-content/60">No attachments.</p>
+            <p className="text-sm text-base-content/60 mb-3">No attachments.</p>
           ) : (
-            <ul className="list-disc list-inside text-sm">
+            <ul className="space-y-1 text-sm mb-3">
               {attachments.map((a) => (
-                <li key={a.id}>{a.file_name}</li>
+                <li key={a.id}>
+                  <button
+                    onClick={() => handleDownload(a)}
+                    className="link link-primary text-left"
+                  >
+                    {a.file_name}
+                  </button>
+                  <span className="text-base-content/50 ml-2">
+                    {(a.file_size / 1024).toFixed(1)} KB
+                  </span>
+                </li>
               ))}
             </ul>
           )}
+          <input
+            type="file"
+            className="file-input file-input-bordered file-input-sm w-full max-w-xs"
+            onChange={handleFileUpload}
+            disabled={uploading}
+          />
         </div>
       </div>
 
