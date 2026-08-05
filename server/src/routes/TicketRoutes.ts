@@ -10,6 +10,7 @@ import { getAttachmentsByTicket, createAttachment } from "../controller/Attachme
 import { getTicketHistory } from "../controller/Tickets/TicketHistoryController.ts";
 import { getTicketsForBoard } from "../controller/Tickets/BoardController.ts";
 import { reorderTickets } from "../controller/Tickets/ReorderController.ts";
+import { upload } from "../middleware/upload.ts";
 
 
 
@@ -31,6 +32,6 @@ router.get("/:ticketId/comments", getCommentsByTicket);
 router.post("/:ticketId/comments", createComment);
 
 router.get("/:ticketId/attachments", getAttachmentsByTicket);
-router.post("/:ticketId/attachments", createAttachment);
+router.post("/:ticketId/attachments", upload.single("file"), createAttachment);
 
 export default router;

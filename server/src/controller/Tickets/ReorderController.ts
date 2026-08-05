@@ -11,6 +11,22 @@ export const reorderTickets = async (req: Request, res: Response) => {
         .json({ error: "status_id and ticket_ids are required" });
     }
 
+    const [statusRows] = await pool.query(`SELECT id FROM statuses WHERE id = ?`, [status_id]);
+    if ((statusRows as unknown[]).length === 0) {
+      return res.status(400).json({ error: "Invalid status_id" });
+    }
+
+    const [existingRows] = await pool.query(
+      `SELECT id FROM tickets WHERE id IN (?) AND deleted_at IS NULL`,
+      [ticket_ids],
+    );
+    const existingIds = new Set((existingRows as { id: number }[]).map((r) => r.id));
+    const missing = ticket_ids.filter((id: number) => !existingIds.has(id));
+
+    if (missing.length > 0) {
+      return res.status(400).json({ error: `Unknown or deleted ticket ids: ${missing.join(", ")}` });
+    }
+
     const connection = await pool.getConnection();
     try {
       await connection.beginTransaction();

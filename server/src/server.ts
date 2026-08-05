@@ -1,7 +1,7 @@
 import express, { type Request, type Response } from "express";
 import { config } from "./envConfig.ts";
 import { pool } from "./config/railway.ts";
-import cors from 'cors';
+import cors from "cors";
 import authRoutes from "./routes/AuthRoutes.ts";
 import ticketRoutes from "./routes/TicketRoutes.ts";
 import commentRoutes from "./routes/CommentRoutes.ts";
@@ -11,6 +11,8 @@ import priorityRoutes from "./routes/PriorityRoutes.ts";
 import statusRoutes from "./routes/StatusRoutes.ts";
 import userRoutes from "./routes/UserRoutes.ts";
 import reportRoutes from "./routes/ReportRoutes.ts";
+import { MulterError } from "multer";
+import type { NextFunction } from "express";
 
 const app = express();
 
@@ -31,6 +33,17 @@ app.use("/priorities", priorityRoutes);
 app.use("/statuses", statusRoutes);
 app.use("/users", userRoutes);
 app.use("/reports", reportRoutes);
+
+app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+  if (err instanceof MulterError) {
+    return res.status(400).json({ error: err.message });
+  }
+  if (err instanceof Error && err.message === "Unsupported file type") {
+    return res.status(400).json({ error: err.message });
+  }
+  console.error("Unhandled error:", err);
+  res.status(500).json({ error: "Internal server error" });
+});
 
 const startServer = async () => {
   try {
